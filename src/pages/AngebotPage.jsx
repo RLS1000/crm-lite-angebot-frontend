@@ -17,7 +17,7 @@ function AngebotPage() {
 
   useEffect(() => {
     axios
-      .get(`https://DEIN-BACKEND-URL/api/angebot/${token}`)
+      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
       .then((res) => setAngebot(res.data))
       .catch((err) => setError("Angebot konnte nicht geladen werden."));
   }, [token]);
