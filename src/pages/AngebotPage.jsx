@@ -16,11 +16,21 @@ function AngebotPage() {
   });
 
   useEffect(() => {
-    axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
-      .then((res) => setAngebot(res.data))
-      .catch((err) => setError("Angebot konnte nicht geladen werden."));
-  }, [token]);
+  console.log("TOKEN:", token);
+  console.log("API URL:", `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`);
+
+  axios
+    .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
+    .then((res) => {
+      console.log("Angebot geladen:", res.data);
+      setAngebot(res.data);
+    })
+    .catch((err) => {
+      console.error("Fehler beim Laden des Angebots:", err);
+      setError("Angebot konnte nicht geladen werden.");
+    });
+}, [token]);
+
 
   const handleBuchen = async () => {
     if (
