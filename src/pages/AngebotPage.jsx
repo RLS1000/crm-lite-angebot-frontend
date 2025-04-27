@@ -75,29 +75,14 @@ function AngebotPage() {
       <h1 className="text-2xl font-bold">Angebot für deine Fotobox-Erinnerungen 📸</h1>
 
       {/* EVENTDETAILS */}
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold mb-4">Dein Event</h2>
+     <div>
+        <h2 className="text-xl font-semibold mb-2">Dein Event</h2>
+        <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}</p>
+        <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
+        <p><strong>Startzeit:</strong> {angebot.lead.event_startzeit?.slice(0,5)}</p>
+        <p><strong>Endzeit:</strong> {angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0,5) : "spätestens am nächsten Vormittag"}</p>
+      </div>
 
-     <div className="flex">
-    <div className="w-32 font-medium">Datum:</div>
-    <div>{new Date(angebot.lead.event_datum).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}</div>
-  </div>
-
-  <div className="flex">
-    <div className="w-32 font-medium">Location:</div>
-    <div>{angebot.lead.event_ort}</div>
-  </div>
-
-  <div className="flex">
-    <div className="w-32 font-medium">Startzeit:</div>
-    <div>{angebot.lead.event_startzeit?.slice(0,5)}</div>
-  </div>
-
-  <div className="flex">
-    <div className="w-32 font-medium">Endzeit:</div>
-    <div>{angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0,5) : "spätestens am nächsten Vormittag"}</div>
-  </div>
-</div>
 
 
 
