@@ -47,9 +47,9 @@ function AngebotPage() {
   const handleBuchen = async () => {
     if (
       !form.vorname || !form.nachname || !form.strasse ||
-      !form.plz || !form.ort || !form.email || !form.telefon
+      !form.plz || !form.ort || !form.email
     ) {
-      alert("Bitte fülle alle Pflichtfelder aus.");
+      alert("Bitte fülle alle Pflichtfelder aus (Telefonnummer ist optional).");
       return;
     }
 
@@ -78,10 +78,8 @@ function AngebotPage() {
 
       {/* EVENTDATEN */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Veranstaltungsort</h2>
+        <h2 className="text-xl font-semibold mb-2">Details zum Event</h2>
         <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
-        {/* Falls wir später Name, Straße, PLZ, Ort separat speichern, können wir sie aufsplitten */}
-        
         <h2 className="text-xl font-semibold mt-6 mb-2">Event-Zeiten</h2>
         <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")}</p>
         <p><strong>Beginn:</strong> {angebot.lead.event_startzeit?.substring(0,5) || "-"}</p>
@@ -144,22 +142,17 @@ function AngebotPage() {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
-          <div className="col-span-2 relative">
-            <input
-              className="border p-2 rounded w-full"
-              placeholder="Telefonnummer (Pflicht für Rückfragen)"
-              value={form.telefon}
-              onChange={(e) => setForm({ ...form, telefon: e.target.value })}
-            />
-            <span className="text-xs text-gray-500 absolute top-full left-0 mt-1">
-              Nur für wichtige Rückfragen oder Absprache verwendet.
-            </span>
-          </div>
+          <input
+            className="border p-2 rounded col-span-2"
+            placeholder="Telefonnummer (optional)"
+            value={form.telefon}
+            onChange={(e) => setForm({ ...form, telefon: e.target.value })}
+          />
         </div>
       </div>
 
       {/* CHECKBOXEN */}
-      <div className="mb-6 space-y-4 text-sm text-gray-700">
+      <div className="mb-6 mt-6 space-y-4 text-sm text-gray-700">
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
