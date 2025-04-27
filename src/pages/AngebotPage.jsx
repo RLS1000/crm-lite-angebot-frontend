@@ -13,21 +13,20 @@ function AngebotPage() {
     plz: "",
     ort: "",
     email: "",
-    telefon: ""
+    telefon: "",
   });
+  const [agbChecked, setAgbChecked] = useState(false);
+  const [datenschutzChecked, setDatenschutzChecked] = useState(false);
 
   useEffect(() => {
     console.log("TOKEN:", token);
-    console.log("API URL:", `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`);
-
     axios
       .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
       .then((res) => {
         console.log("Angebot geladen:", res.data);
+        const lead = res.data.lead;
         setAngebot(res.data);
 
-        // 🧹 Formulardaten vorausfüllen
-        const lead = res.data.lead;
         setForm((prev) => ({
           ...prev,
           vorname: lead.vorname || "",
@@ -54,6 +53,11 @@ function AngebotPage() {
       return;
     }
 
+    if (!agbChecked || !datenschutzChecked) {
+      alert("Bitte bestätige die AGB und den Datenschutz.");
+      return;
+    }
+
     alert("🚀 Bestätigung wird bald an die API gesendet.");
   };
 
@@ -67,26 +71,30 @@ function AngebotPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-6">
-        Angebot für {angebot.lead.vorname} {angebot.lead.nachname}
+      {/* Titel */}
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Dein persönliches Angebot für eine Fotobox 📸
       </h1>
 
       {/* EVENTDATEN */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Event-Details</h2>
-        <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")}</p>
-        <p><strong>Beginn:</strong> {angebot.lead.event_startzeit}</p>
-        <p><strong>Ende:</strong> {angebot.lead.event_endzeit || "Offen"}</p>
+        <h2 className="text-xl font-semibold mb-2">Veranstaltungsort</h2>
         <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
+        {/* Falls wir später Name, Straße, PLZ, Ort separat speichern, können wir sie aufsplitten */}
+        
+        <h2 className="text-xl font-semibold mt-6 mb-2">Event-Zeiten</h2>
+        <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")}</p>
+        <p><strong>Beginn:</strong> {angebot.lead.event_startzeit?.substring(0,5) || "-"}</p>
+        <p><strong>Ende:</strong> {angebot.lead.event_endzeit?.substring(0,5) || "Offen"}</p>
       </div>
 
       {/* ARTIKEL */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Artikelübersicht</h2>
+        <h2 className="text-xl font-semibold mb-2">Deine Auswahl</h2>
         <ul className="list-disc pl-6">
           {angebot.artikel.map((a) => (
             <li key={a.id}>
-              {a.variante_name} – {a.einzelpreis} € × {a.anzahl}
+              {a.anzahl}× {a.variante_name} – {a.einzelpreis} €
             </li>
           ))}
         </ul>
@@ -144,10 +152,30 @@ function AngebotPage() {
               onChange={(e) => setForm({ ...form, telefon: e.target.value })}
             />
             <span className="text-xs text-gray-500 absolute top-full left-0 mt-1">
-              Wird nur für Rückfragen oder Notfälle genutzt.
+              Nur für wichtige Rückfragen oder Absprache verwendet.
             </span>
           </div>
         </div>
+      </div>
+
+      {/* CHECKBOXEN */}
+      <div className="mb-6 space-y-4 text-sm text-gray-700">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={agbChecked}
+            onChange={(e) => setAgbChecked(e.target.checked)}
+          />
+          Ich akzeptiere die AGB.
+        </label>
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={datenschutzChecked}
+            onChange={(e) => setDatenschutzChecked(e.target.checked)}
+          />
+          Ich akzeptiere die Datenschutzbestimmungen.
+        </label>
       </div>
 
       {/* BESTÄTIGUNG */}
