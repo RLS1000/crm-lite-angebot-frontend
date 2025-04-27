@@ -13,35 +13,47 @@ function AngebotPage() {
     plz: "",
     ort: "",
     email: "",
+    telefon: ""
   });
 
   useEffect(() => {
-  console.log("TOKEN:", token);
-  console.log("API URL:", `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`);
+    console.log("TOKEN:", token);
+    console.log("API URL:", `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`);
 
-  axios
-    .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
-    .then((res) => {
-      console.log("Angebot geladen:", res.data);
-      setAngebot(res.data);
-    })
-    .catch((err) => {
-      console.error("Fehler beim Laden des Angebots:", err);
-      setError("Angebot konnte nicht geladen werden.");
-    });
-}, [token]);
+    axios
+      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
+      .then((res) => {
+        console.log("Angebot geladen:", res.data);
+        setAngebot(res.data);
 
+        // 🧹 Formulardaten vorausfüllen
+        const lead = res.data.lead;
+        setForm((prev) => ({
+          ...prev,
+          vorname: lead.vorname || "",
+          nachname: lead.nachname || "",
+          email: lead.email || "",
+          telefon: lead.telefon || "",
+          strasse: lead.strasse || "",
+          plz: lead.plz || "",
+          ort: lead.ort || "",
+        }));
+      })
+      .catch((err) => {
+        console.error("Fehler beim Laden des Angebots:", err);
+        setError("Angebot konnte nicht geladen werden.");
+      });
+  }, [token]);
 
   const handleBuchen = async () => {
     if (
       !form.vorname || !form.nachname || !form.strasse ||
-      !form.plz || !form.ort || !form.email
+      !form.plz || !form.ort || !form.email || !form.telefon
     ) {
       alert("Bitte fülle alle Pflichtfelder aus.");
       return;
     }
 
-    // API-Aufruf folgt bald:
     alert("🚀 Bestätigung wird bald an die API gesendet.");
   };
 
@@ -55,70 +67,92 @@ function AngebotPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-6">
         Angebot für {angebot.lead.vorname} {angebot.lead.nachname}
       </h1>
 
-      <p><strong>Event-Datum:</strong> {angebot.lead.event_datum}</p>
-      <p><strong>Ort:</strong> {angebot.lead.event_ort}</p>
+      {/* EVENTDATEN */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Event-Details</h2>
+        <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")}</p>
+        <p><strong>Beginn:</strong> {angebot.lead.event_startzeit}</p>
+        <p><strong>Ende:</strong> {angebot.lead.event_endzeit || "Offen"}</p>
+        <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
+      </div>
 
-      <h2 className="text-xl mt-6 mb-2 font-semibold">Artikel</h2>
-      <ul className="list-disc pl-6">
-        {angebot.artikel.map((a) => (
-          <li key={a.id}>
-            {a.variante_name} – {a.einzelpreis} € x {a.anzahl}
-          </li>
-        ))}
-      </ul>
+      {/* ARTIKEL */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Artikelübersicht</h2>
+        <ul className="list-disc pl-6">
+          {angebot.artikel.map((a) => (
+            <li key={a.id}>
+              {a.variante_name} – {a.einzelpreis} € × {a.anzahl}
+            </li>
+          ))}
+        </ul>
 
-      <div className="mt-6 text-lg font-bold">
-        Gesamtsumme: {gesamt} €
+        <div className="mt-4 text-lg font-bold">
+          Gesamtsumme: {gesamt} €
+        </div>
       </div>
 
       {/* RECHNUNGSADRESSE */}
-      <h2 className="text-xl mt-8 mb-2 font-semibold">Rechnungsadresse</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
-          className="border p-2 rounded"
-          placeholder="Vorname"
-          value={form.vorname}
-          onChange={(e) => setForm({ ...form, vorname: e.target.value })}
-        />
-        <input
-          className="border p-2 rounded"
-          placeholder="Nachname"
-          value={form.nachname}
-          onChange={(e) => setForm({ ...form, nachname: e.target.value })}
-        />
-        <input
-          className="border p-2 rounded col-span-2"
-          placeholder="Straße & Hausnummer"
-          value={form.strasse}
-          onChange={(e) => setForm({ ...form, strasse: e.target.value })}
-        />
-        <input
-          className="border p-2 rounded"
-          placeholder="PLZ"
-          value={form.plz}
-          onChange={(e) => setForm({ ...form, plz: e.target.value })}
-        />
-        <input
-          className="border p-2 rounded"
-          placeholder="Ort"
-          value={form.ort}
-          onChange={(e) => setForm({ ...form, ort: e.target.value })}
-        />
-        <input
-          className="border p-2 rounded col-span-2"
-          placeholder="E-Mail"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            className="border p-2 rounded"
+            placeholder="Vorname"
+            value={form.vorname}
+            onChange={(e) => setForm({ ...form, vorname: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded"
+            placeholder="Nachname"
+            value={form.nachname}
+            onChange={(e) => setForm({ ...form, nachname: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded col-span-2"
+            placeholder="Straße & Hausnummer"
+            value={form.strasse}
+            onChange={(e) => setForm({ ...form, strasse: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded"
+            placeholder="PLZ"
+            value={form.plz}
+            onChange={(e) => setForm({ ...form, plz: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded"
+            placeholder="Ort"
+            value={form.ort}
+            onChange={(e) => setForm({ ...form, ort: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded col-span-2"
+            placeholder="E-Mail"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
+          <div className="col-span-2 relative">
+            <input
+              className="border p-2 rounded w-full"
+              placeholder="Telefonnummer (Pflicht für Rückfragen)"
+              value={form.telefon}
+              onChange={(e) => setForm({ ...form, telefon: e.target.value })}
+            />
+            <span className="text-xs text-gray-500 absolute top-full left-0 mt-1">
+              Wird nur für Rückfragen oder Notfälle genutzt.
+            </span>
+          </div>
+        </div>
       </div>
 
+      {/* BESTÄTIGUNG */}
       <button
-        className="mt-6 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        className="mt-6 w-full px-4 py-3 bg-green-600 text-white rounded hover:bg-green-700 text-lg font-bold"
         onClick={handleBuchen}
       >
         Verbindlich buchen
