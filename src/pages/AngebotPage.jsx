@@ -48,19 +48,46 @@ function AngebotPage() {
       });
   }, [token]);
 
-  const handleBuchen = async () => {
-    if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
-      alert("Bitte fülle alle Pflichtfelder aus.");
-      return;
-    }
-    if (!form.agb || !form.datenschutz) {
-      alert("Bitte akzeptiere die AGB und den Datenschutz.");
-      return;
-    }
+const handleBuchen = async () => {
+  if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
+    alert("Bitte fülle alle Pflichtfelder aus.");
+    return;
+  }
+  if (!form.agb || !form.datenschutz) {
+    alert("Bitte akzeptiere die AGB und den Datenschutz.");
+    return;
+  }
 
-    alert("🚀 Bestätigung wird bald an die API gesendet.");
-    // API-Aufruf folgt!
-  };
+  try {
+    const response = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`, {
+      rechnungsadresse: {
+        vorname: form.vorname,
+        nachname: form.nachname,
+        telefon: form.telefon,
+        email: form.email,
+        strasse: form.strasse,
+        plz: form.plz,
+        ort: form.ort,
+        firmenname: form.firmenname,
+        firma_strasse: form.firma_strasse,
+        firma_plz: form.firma_plz,
+        firma_ort: form.firma_ort,
+        gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+      },
+    });
+
+    if (response.data.success) {
+      alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
+      // Optional: Weiterleitung oder Dankesseite
+    } else {
+      alert("❌ Fehler bei der Bestätigung. Bitte später nochmal versuchen.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung.");
+  }
+};
+
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!angebot) return <div className="p-4">Lade Angebot...</div>;
