@@ -76,12 +76,13 @@ function AngebotPage() {
 
       {/* EVENTDETAILS */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Details zum Event</h2>
-        <p><strong>Datum:</strong> {angebot.lead.event_datum}</p>
-        <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
-        <p><strong>Startzeit:</strong> {angebot.lead.event_startzeit?.slice(0,5)}</p>
-        <p><strong>Endzeit:</strong> {angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0,5) : "—"}</p>
+          <h2 className="text-xl font-semibold mb-2">Details zum Event</h2>
+          <p><strong>Datum:</strong> {angebot.lead.event_datum}</p>
+          <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
+          <p><strong>Startzeit:</strong> {angebot.lead.event_startzeit?.slice(0,5)}</p>
+          <p><strong>Endzeit:</strong> {angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0,5) : "spätestens am nächsten Vormittag"}</p>
       </div>
+
 
       {/* ARTIKEL */}
       <div>
