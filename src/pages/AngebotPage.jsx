@@ -59,7 +59,8 @@ const handleBuchen = async () => {
   }
 
   try {
-    const response = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`, {
+    // 1. Angebot bestätigen
+    const bestaetigenResponse = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`, {
       rechnungsadresse: {
         vorname: form.vorname,
         nachname: form.nachname,
@@ -76,17 +77,28 @@ const handleBuchen = async () => {
       },
     });
 
-    if (response.data.success) {
-      alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
-      // Optional: Weiterleitung oder Dankesseite
-    } else {
+    if (!bestaetigenResponse.data.success) {
       alert("❌ Fehler bei der Bestätigung. Bitte später nochmal versuchen.");
+      return;
     }
+
+    // 2. Lead zu Buchung umwandeln
+    const leadId = angebot.lead.id;
+    const umwandelnResponse = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/lead/${leadId}/convert-to-booking`);
+
+    if (umwandelnResponse.data.success) {
+      alert("✅ Deine Buchung wurde erfolgreich erstellt!");
+      // Optional: Weiterleitung auf eine Danke-Seite oder schließen
+    } else {
+      alert("❌ Fehler bei der Buchungserstellung. Bitte später nochmal versuchen.");
+    }
+
   } catch (error) {
     console.error(error);
     alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung.");
   }
 };
+
 
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
