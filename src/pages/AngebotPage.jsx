@@ -59,45 +59,38 @@ const handleBuchen = async () => {
   }
 
   try {
-    // 1. Angebot bestätigen
-    const bestaetigenResponse = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`, {
-      rechnungsadresse: {
-        vorname: form.vorname,
-        nachname: form.nachname,
-        telefon: form.telefon,
-        email: form.email,
-        strasse: form.strasse,
-        plz: form.plz,
-        ort: form.ort,
-        firmenname: form.firmenname,
-        firma_strasse: form.firma_strasse,
-        firma_plz: form.firma_plz,
-        firma_ort: form.firma_ort,
-        gleicheRechnungsadresse: form.gleicheRechnungsadresse,
-      },
-    });
+    const response = await axios.post(
+      `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
+      {
+        rechnungsadresse: {
+          vorname: form.vorname,
+          nachname: form.nachname,
+          telefon: form.telefon,
+          email: form.email,
+          strasse: form.strasse,
+          plz: form.plz,
+          ort: form.ort,
+          firmenname: form.firmenname,
+          firma_strasse: form.firma_strasse,
+          firma_plz: form.firma_plz,
+          firma_ort: form.firma_ort,
+          gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+        }
+      }
+    );
 
-    if (!bestaetigenResponse.data.success) {
-      alert("❌ Fehler bei der Bestätigung. Bitte später nochmal versuchen.");
-      return;
-    }
-
-    // 2. Lead zu Buchung umwandeln
-    const leadId = angebot.lead.id;
-    const umwandelnResponse = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/lead/${leadId}/convert-to-booking`);
-
-    if (umwandelnResponse.data.success) {
-      alert("✅ Deine Buchung wurde erfolgreich erstellt!");
-      // Optional: Weiterleitung auf eine Danke-Seite oder schließen
+    if (response.data.success) {
+      alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
+      // Optionale Weiterleitung: window.location.href = "/danke";
     } else {
-      alert("❌ Fehler bei der Buchungserstellung. Bitte später nochmal versuchen.");
+      alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
     }
-
   } catch (error) {
     console.error(error);
-    alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung.");
+    alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
   }
 };
+
 
 
 
