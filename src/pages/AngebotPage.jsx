@@ -42,6 +42,7 @@ function AngebotPage() {
           email: lead.email || "",
           telefon: lead.telefon || "",
           firmenname: lead.firmenname || "",
+          kundentyp: lead.kundentyp || "",
         }));
       })
       .catch((err) => {
