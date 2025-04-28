@@ -191,9 +191,9 @@ function AngebotPage() {
               <input
                 type="checkbox"
                 checked={!form.gleicheRechnungsadresse}
-                onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: e.target.checked })}
+                onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
               />
-              <span>Rechnungsadresse entspricht der Firmenadresse</span>
+              <span>Abweichende Rechnungsadresse</span>
             </label>
           </div>
         </div>
