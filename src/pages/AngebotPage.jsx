@@ -23,7 +23,9 @@ function AngebotPage() {
     datenschutz: false,
   });
 
-  const istFirmenkunde = angebot?.lead.kundentyp?.toLowerCase().includes("firma");
+  const istFirmenkunde = angebot && angebot.lead && angebot.lead.kundentyp
+  ? angebot.lead.kundentyp.toLowerCase().includes("firma")
+  : false;
 
   useEffect(() => {
     axios
