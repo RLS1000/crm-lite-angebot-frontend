@@ -136,6 +136,7 @@ const handleBuchen = async () => {
       {/* KUNDENDATEN */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
+        <p className="text-sm text-gray-500">Kundentyp: {angebot?.lead?.kundentyp}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border p-2 rounded" placeholder="Vorname*" value={form.vorname} onChange={(e) => setForm({...form, vorname: e.target.value})} />
           <input className="border p-2 rounded" placeholder="Nachname*" value={form.nachname} onChange={(e) => setForm({...form, nachname: e.target.value})} />
