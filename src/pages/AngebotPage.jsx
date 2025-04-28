@@ -200,7 +200,7 @@ function AngebotPage() {
       )}
 
       {/* RECHNUNGSADRESSE */}
-{!form.gleicheRechnungsadresse && (
+{form.gleicheRechnungsadresse && (
   <>
     <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
