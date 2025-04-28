@@ -23,9 +23,8 @@ function AngebotPage() {
     datenschutz: false,
   });
 
-  const istFirmenkunde = angebot && angebot.lead && angebot.lead.kundentyp
-  ? angebot.lead.kundentyp.toLowerCase().includes("firma")
-  : false;
+  // 🛠️ NEU: istFirmenkunde jetzt als Funktion
+  const istFirmenkunde = () => angebot?.lead?.kundentyp?.toLowerCase().includes("firma") || false;
 
   useEffect(() => {
     axios
@@ -51,51 +50,47 @@ function AngebotPage() {
       });
   }, [token]);
 
-const handleBuchen = async () => {
-  if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
-    alert("Bitte fülle alle Pflichtfelder aus.");
-    return;
-  }
-  if (!form.agb || !form.datenschutz) {
-    alert("Bitte akzeptiere die AGB und den Datenschutz.");
-    return;
-  }
-
-  try {
-    const response = await axios.post(
-      `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
-      {
-        rechnungsadresse: {
-          vorname: form.vorname,
-          nachname: form.nachname,
-          telefon: form.telefon,
-          email: form.email,
-          strasse: form.strasse,
-          plz: form.plz,
-          ort: form.ort,
-          firmenname: form.firmenname,
-          firma_strasse: form.firma_strasse,
-          firma_plz: form.firma_plz,
-          firma_ort: form.firma_ort,
-          gleicheRechnungsadresse: form.gleicheRechnungsadresse,
-        }
-      }
-    );
-
-    if (response.data.success) {
-      alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
-      // Optionale Weiterleitung: window.location.href = "/danke";
-    } else {
-      alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
+  const handleBuchen = async () => {
+    if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
+      alert("Bitte fülle alle Pflichtfelder aus.");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
-  }
-};
+    if (!form.agb || !form.datenschutz) {
+      alert("Bitte akzeptiere die AGB und den Datenschutz.");
+      return;
+    }
 
+    try {
+      const response = await axios.post(
+        `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
+        {
+          rechnungsadresse: {
+            vorname: form.vorname,
+            nachname: form.nachname,
+            telefon: form.telefon,
+            email: form.email,
+            strasse: form.strasse,
+            plz: form.plz,
+            ort: form.ort,
+            firmenname: form.firmenname,
+            firma_strasse: form.firma_strasse,
+            firma_plz: form.firma_plz,
+            firma_ort: form.firma_ort,
+            gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+          }
+        }
+      );
 
-
+      if (response.data.success) {
+        alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
+      } else {
+        alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
+    }
+  };
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!angebot) return <div className="p-4">Lade Angebot...</div>;
@@ -110,16 +105,13 @@ const handleBuchen = async () => {
       <h1 className="text-2xl font-bold">Angebot für deine Fotobox-Erinnerungen 📸</h1>
 
       {/* EVENTDETAILS */}
-     <div>
+      <div>
         <h2 className="text-xl font-semibold mb-2">Dein Event</h2>
         <p><strong>Datum:</strong> {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}</p>
         <p><strong>Location:</strong> {angebot.lead.event_ort}</p>
-        <p><strong>Startzeit:</strong> {angebot.lead.event_startzeit?.slice(0,5)}</p>
-        <p><strong>Endzeit:</strong> {angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0,5) : "spätestens am nächsten Vormittag"}</p>
+        <p><strong>Startzeit:</strong> {angebot.lead.event_startzeit?.slice(0, 5)}</p>
+        <p><strong>Endzeit:</strong> {angebot.lead.event_endzeit ? angebot.lead.event_endzeit.slice(0, 5) : "spätestens am nächsten Vormittag"}</p>
       </div>
-
-
-
 
       {/* ARTIKEL */}
       <div>
@@ -134,47 +126,46 @@ const handleBuchen = async () => {
         <div className="mt-4 text-lg font-bold">Gesamtsumme: {gesamt} €</div>
       </div>
 
-{/* KUNDENDATEN */}
-<div>
-  <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
+      {/* KUNDENDATEN */}
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-    <div className="col-span-2">
-      <p className="text-sm text-gray-500">
-        <strong>Kundentyp:</strong> {angebot?.lead?.kundentyp || "unbekannt"}
-      </p>
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+          <div className="col-span-2">
+            <p className="text-sm text-gray-500">
+              <strong>Kundentyp:</strong> {angebot?.lead?.kundentyp || "unbekannt"}
+            </p>
+          </div>
 
-    <input
-      className="border p-2 rounded"
-      placeholder="Vorname*"
-      value={form.vorname}
-      onChange={(e) => setForm({ ...form, vorname: e.target.value })}
-    />
-    <input
-      className="border p-2 rounded"
-      placeholder="Nachname*"
-      value={form.nachname}
-      onChange={(e) => setForm({ ...form, nachname: e.target.value })}
-    />
-    <input
-      className="border p-2 rounded col-span-2"
-      placeholder="Telefon (optional)"
-      value={form.telefon}
-      onChange={(e) => setForm({ ...form, telefon: e.target.value })}
-    />
-    <input
-      className="border p-2 rounded col-span-2"
-      placeholder="E-Mail*"
-      value={form.email}
-      onChange={(e) => setForm({ ...form, email: e.target.value })}
-    />
-  </div>
-</div>
-
+          <input
+            className="border p-2 rounded"
+            placeholder="Vorname*"
+            value={form.vorname}
+            onChange={(e) => setForm({ ...form, vorname: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded"
+            placeholder="Nachname*"
+            value={form.nachname}
+            onChange={(e) => setForm({ ...form, nachname: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded col-span-2"
+            placeholder="Telefon (optional)"
+            value={form.telefon}
+            onChange={(e) => setForm({ ...form, telefon: e.target.value })}
+          />
+          <input
+            className="border p-2 rounded col-span-2"
+            placeholder="E-Mail*"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
+        </div>
+      </div>
 
       {/* FIRMENDATEN */}
-      {istFirmenkunde && (
+      {istFirmenkunde() && (
         <div>
           <h2 className="text-xl font-semibold mb-2">Firmendaten</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
