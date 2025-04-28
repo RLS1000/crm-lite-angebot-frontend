@@ -127,11 +127,6 @@ function AngebotPage() {
       <div>
         <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-          <div className="col-span-2">
-            <p className="text-sm text-gray-500">
-              <strong>Kundentyp:</strong> {angebot?.lead?.kundentyp || "unbekannt"}
-            </p>
-          </div>
 
           <input
             className="border p-2 rounded"
@@ -195,7 +190,7 @@ function AngebotPage() {
             <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
-                checked={form.gleicheRechnungsadresse}
+                checked={!form.gleicheRechnungsadresse}
                 onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: e.target.checked })}
               />
               <span>Rechnungsadresse entspricht der Firmenadresse</span>
@@ -207,17 +202,6 @@ function AngebotPage() {
       {/* RECHNUNGSADRESSE */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
-
-        <div className="mt-2 mb-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={!form.gleicheRechnungsadresse}
-              onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
-            />
-            <span>Abweichende Rechnungsadresse angeben</span>
-          </label>
-        </div>
 
         {!form.gleicheRechnungsadresse && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
