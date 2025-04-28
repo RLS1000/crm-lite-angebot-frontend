@@ -133,17 +133,44 @@ const handleBuchen = async () => {
         <div className="mt-4 text-lg font-bold">Gesamtsumme: {gesamt} €</div>
       </div>
 
-      {/* KUNDENDATEN */}
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
-        <p className="text-sm text-gray-500">Kundentyp: {angebot?.lead?.kundentyp}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input className="border p-2 rounded" placeholder="Vorname*" value={form.vorname} onChange={(e) => setForm({...form, vorname: e.target.value})} />
-          <input className="border p-2 rounded" placeholder="Nachname*" value={form.nachname} onChange={(e) => setForm({...form, nachname: e.target.value})} />
-          <input className="border p-2 rounded col-span-2" placeholder="Telefon (optional)" value={form.telefon} onChange={(e) => setForm({...form, telefon: e.target.value})} />
-          <input className="border p-2 rounded col-span-2" placeholder="E-Mail*" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
-        </div>
-      </div>
+{/* KUNDENDATEN */}
+<div>
+  <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+    <div className="col-span-2">
+      <p className="text-sm text-gray-500">
+        <strong>Kundentyp:</strong> {angebot?.lead?.kundentyp || "unbekannt"}
+      </p>
+    </div>
+
+    <input
+      className="border p-2 rounded"
+      placeholder="Vorname*"
+      value={form.vorname}
+      onChange={(e) => setForm({ ...form, vorname: e.target.value })}
+    />
+    <input
+      className="border p-2 rounded"
+      placeholder="Nachname*"
+      value={form.nachname}
+      onChange={(e) => setForm({ ...form, nachname: e.target.value })}
+    />
+    <input
+      className="border p-2 rounded col-span-2"
+      placeholder="Telefon (optional)"
+      value={form.telefon}
+      onChange={(e) => setForm({ ...form, telefon: e.target.value })}
+    />
+    <input
+      className="border p-2 rounded col-span-2"
+      placeholder="E-Mail*"
+      value={form.email}
+      onChange={(e) => setForm({ ...form, email: e.target.value })}
+    />
+  </div>
+</div>
+
 
       {/* FIRMENDATEN */}
       {istFirmenkunde && (
