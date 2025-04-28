@@ -200,16 +200,32 @@ function AngebotPage() {
       )}
 
       {/* RECHNUNGSADRESSE */}
-      <div>
-        {!form.gleicheRechnungsadresse && (
-          <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr.*" value={form.strasse} onChange={(e) => setForm({...form, strasse: e.target.value})} />
-            <input className="border p-2 rounded" placeholder="PLZ*" value={form.plz} onChange={(e) => setForm({...form, plz: e.target.value})} />
-            <input className="border p-2 rounded" placeholder="Ort*" value={form.ort} onChange={(e) => setForm({...form, ort: e.target.value})} />
-          </div>
-        )}
-      </div>
+{!form.gleicheRechnungsadresse && (
+  <>
+    <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input
+        className="border p-2 rounded col-span-2"
+        placeholder="Straße & Nr.*"
+        value={form.strasse}
+        onChange={(e) => setForm({ ...form, strasse: e.target.value })}
+      />
+      <input
+        className="border p-2 rounded"
+        placeholder="PLZ*"
+        value={form.plz}
+        onChange={(e) => setForm({ ...form, plz: e.target.value })}
+      />
+      <input
+        className="border p-2 rounded"
+        placeholder="Ort*"
+        value={form.ort}
+        onChange={(e) => setForm({ ...form, ort: e.target.value })}
+      />
+    </div>
+  </>
+)}
+
 
       {/* AGB und Datenschutz */}
       <div className="space-y-2">
