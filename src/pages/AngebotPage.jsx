@@ -190,8 +190,8 @@ function AngebotPage() {
             <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
-                checked={!form.gleicheRechnungsadresse}
-                onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
+                checked={form.gleicheRechnungsadresse}
+                onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: e.target.checked })}
               />
               <span>Abweichende Rechnungsadresse</span>
             </label>
