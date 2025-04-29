@@ -61,15 +61,17 @@ function AngebotPage() {
       const response = await axios.post(
         `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
         {
-          rechnungsadresse: {
-            vorname: form.vorname,
-            nachname: form.nachname,
-            telefon: form.telefon,
-            email: form.email,
+        kontakt: {
+          vorname: form.vorname,
+          nachname: form.nachname,
+          email: form.email,
+          telefon: form.telefon,
+          firmenname: form.firmenname,
+          },
+        rechnungsadresse: {
             strasse: form.strasse,
             plz: form.plz,
             ort: form.ort,
-            firmenname: form.firmenname,
             firma_strasse: form.firma_strasse,
             firma_plz: form.firma_plz,
             firma_ort: form.firma_ort,
