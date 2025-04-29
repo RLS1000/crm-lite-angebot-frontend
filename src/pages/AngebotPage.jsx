@@ -45,31 +45,6 @@ function AngebotPage() {
       });
   }, [token]);
 
-  // Nur sortieren, wenn angebot und angebot.artikel verfügbar sind
-const sortedArtikel = angebot?.artikel
-  ? [...angebot.artikel].sort((a, b) => {
-      const categoryPriority = {
-        'Fotobox': 1,
-        'Hintergrund': 2,
-        'Accessoire': 3,
-        'Service': 4
-      };
-
-      const getCategory = (name) => {
-        for (const category in categoryPriority) {
-          if (name?.toLowerCase().includes(category.toLowerCase())) {
-            return categoryPriority[category];
-          }
-        }
-        return 999; // Unbekannte Kategorie kommt ganz hinten
-      };
-
-      return getCategory(a.variante_name) - getCategory(b.variante_name);
-    })
-  : [];
-
-
-
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
   const handleBuchen = async () => {
@@ -138,13 +113,13 @@ const sortedArtikel = angebot?.artikel
       {/* ARTIKEL */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Dein Angebot</h2>
-            <ul className="list-disc pl-6 space-y-1">
-              {sortedArtikel.map((a) => (
-                <li key={a.id}>
-                  {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
-                </li>
-              ))}
-            </ul>
+          <ul className="list-disc pl-6 space-y-1">
+                    {angebot.artikel.map((a) => (
+                      <li key={a.id}>
+                        {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
+                      </li>
+                    ))}
+                  </ul>
 
             
         <div className="mt-4 text-lg font-bold">Gesamtsumme: {gesamt} €</div>
