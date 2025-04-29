@@ -243,7 +243,7 @@ function AngebotPage() {
         href="https://mrknips.de/allgemeine-geschaeftsbedingungen/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 underline"
+        className="text-blue-600 underline hover:text-blue-800"
       >
         AGB
       </a>
@@ -262,7 +262,7 @@ function AngebotPage() {
         href="https://mrknips.de/datenschutzerklaerung/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 underline"
+        className="text-blue-600 underline hover:text-blue-800"
       >
         Datenschutzbestimmungen
       </a>
