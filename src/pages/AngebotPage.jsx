@@ -229,25 +229,48 @@ function AngebotPage() {
 )}
 
 
-      {/* AGB und Datenschutz */}
-      <div className="space-y-2">
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={form.agb}
-            onChange={(e) => setForm({ ...form, agb: e.target.checked })}
-          />
-          <span>Ich akzeptiere die AGB*</span>
-        </label>
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={form.datenschutz}
-            onChange={(e) => setForm({ ...form, datenschutz: e.target.checked })}
-          />
-          <span>Ich akzeptiere die Datenschutzbestimmungen*</span>
-        </label>
-      </div>
+{/* AGB und Datenschutz */}
+<div className="space-y-2">
+  <label className="flex items-center space-x-2">
+    <input
+      type="checkbox"
+      checked={form.agb}
+      onChange={(e) => setForm({ ...form, agb: e.target.checked })}
+    />
+    <span>
+      Ich akzeptiere die{" "}
+      <a
+        href="https://mrknips.de/allgemeine-geschaeftsbedingungen/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline"
+      >
+        AGB
+      </a>
+      *
+    </span>
+  </label>
+  <label className="flex items-center space-x-2">
+    <input
+      type="checkbox"
+      checked={form.datenschutz}
+      onChange={(e) => setForm({ ...form, datenschutz: e.target.checked })}
+    />
+    <span>
+      Ich akzeptiere die{" "}
+      <a
+        href="https://mrknips.de/datenschutzerklaerung/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline"
+      >
+        Datenschutzbestimmungen
+      </a>
+      *
+    </span>
+  </label>
+</div>
+
 
       {/* BUCHEN */}
       <button
