@@ -45,20 +45,29 @@ function AngebotPage() {
       });
   }, [token]);
 
-  // Define category priorities
-const categoryPriority = {
-  'Fotobox': 1,
-  'Hintergrund': 2,
-  'Accessoire': 3,
-  'Service': 4
-};
+  // Nur sortieren, wenn angebot und angebot.artikel verfügbar sind
+const sortedArtikel = angebot?.artikel
+  ? [...angebot.artikel].sort((a, b) => {
+      const categoryPriority = {
+        'Fotobox': 1,
+        'Hintergrund': 2,
+        'Accessoire': 3,
+        'Service': 4
+      };
 
-// Sort the articles based on category priority
-const sortedArtikel = [...angebot.artikel].sort((a, b) => {
-  const aCategory = Object.keys(categoryPriority).find(key => a.variante_name.includes(key)) || '';
-  const bCategory = Object.keys(categoryPriority).find(key => b.variante_name.includes(key)) || '';
-  return categoryPriority[aCategory] - categoryPriority[bCategory];
-});
+      const getCategory = (name) => {
+        for (const category in categoryPriority) {
+          if (name?.toLowerCase().includes(category.toLowerCase())) {
+            return categoryPriority[category];
+          }
+        }
+        return 999; // Unbekannte Kategorie kommt ganz hinten
+      };
+
+      return getCategory(a.variante_name) - getCategory(b.variante_name);
+    })
+  : [];
+
 
 
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
@@ -136,6 +145,7 @@ const sortedArtikel = [...angebot.artikel].sort((a, b) => {
                 </li>
               ))}
             </ul>
+
             
         <div className="mt-4 text-lg font-bold">Gesamtsumme: {gesamt} €</div>
       </div>
