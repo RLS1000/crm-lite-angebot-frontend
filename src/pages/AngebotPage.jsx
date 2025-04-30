@@ -193,17 +193,6 @@ const handleBuchen = async () => {
               onChange={(e) => setForm({ ...form, firma_ort: e.target.value })}
             />
           </div>
-
-          <div className="mt-2">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={form.gleicheRechnungsadresse}
-                onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: e.target.checked })}
-              />
-              <span>Abweichende Rechnungsadresse</span>
-            </label>
-          </div>
         </div>
       )}
 
