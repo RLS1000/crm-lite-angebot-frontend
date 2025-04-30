@@ -58,27 +58,27 @@ function AngebotPage() {
     }
 
     try {
-      const response = await axios.post(
-        `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
-        {
+    const response = await axios.post(
+      `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
+      {
         kontakt: {
           vorname: form.vorname,
           nachname: form.nachname,
           email: form.email,
           telefon: form.telefon,
           firmenname: form.firmenname,
-          },
+        },
         rechnungsadresse: {
-            strasse: form.strasse,
-            plz: form.plz,
-            ort: form.ort,
-            firma_strasse: form.firma_strasse,
-            firma_plz: form.firma_plz,
-            firma_ort: form.firma_ort,
-            gleicheRechnungsadresse: form.gleicheRechnungsadresse,
-          }
-        }
-      );
+          strasse: form.strasse,
+          plz: form.plz,
+          ort: form.ort,
+          firma_strasse: form.firma_strasse,
+          firma_plz: form.firma_plz,
+          firma_ort: form.firma_ort,
+          gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+        },
+      }
+    );
 
       if (response.data.success) {
         alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
