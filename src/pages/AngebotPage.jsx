@@ -207,7 +207,7 @@ const handleBuchen = async () => {
         </div>
       )}
 
-      {/* RECHNUNGSADRESSE */}
+{/* RECHNUNGSADRESSE */}
 {(!istFirmenkunde || form.gleicheRechnungsadresse) && (
   <>
     <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
@@ -233,6 +233,49 @@ const handleBuchen = async () => {
     </div>
   </>
 )}
+
+{/* Checkbox für Firmenkunden */}
+{istFirmenkunde && (
+    <div className="mt-2">
+      <label className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          checked={!form.gleicheRechnungsadresse}
+          onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
+        />
+        <span>Abweichende Rechnungsadresse</span>
+      </label>
+</div>
+
+)}
+
+{/* Abweichende Rechnungsadresse (nur wenn gewählt) */}
+{istFirmenkunde && !form.gleicheRechnungsadresse && (
+  <>
+    <h2 className="text-xl font-semibold mb-2">Abweichende Rechnungsadresse</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input
+        className="border p-2 rounded col-span-2"
+        placeholder="Straße & Nr.*"
+        value={form.strasse}
+        onChange={(e) => setForm({ ...form, strasse: e.target.value })}
+      />
+      <input
+        className="border p-2 rounded"
+        placeholder="PLZ*"
+        value={form.plz}
+        onChange={(e) => setForm({ ...form, plz: e.target.value })}
+      />
+      <input
+        className="border p-2 rounded"
+        placeholder="Ort*"
+        value={form.ort}
+        onChange={(e) => setForm({ ...form, ort: e.target.value })}
+      />
+    </div>
+  </>
+)}
+
 
 
 {/* AGB und Datenschutz */}
