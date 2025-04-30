@@ -47,17 +47,21 @@ function AngebotPage() {
 
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
-  const handleBuchen = async () => {
-    if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
-      alert("Bitte fülle alle Pflichtfelder aus.");
-      return;
-    }
-    if (!form.agb || !form.datenschutz) {
-      alert("Bitte akzeptiere die AGB und den Datenschutz.");
-      return;
-    }
+  // frontend/src/pages/AngebotPage.jsx
+// (Ausschnitt: handleBuchen Funktion)
 
-    try {
+const handleBuchen = async () => {
+  if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
+    alert("Bitte fülle alle Pflichtfelder aus.");
+    return;
+  }
+
+  if (!form.agb || !form.datenschutz) {
+    alert("Bitte akzeptiere die AGB und den Datenschutz.");
+    return;
+  }
+
+  try {
     const response = await axios.post(
       `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
       {
@@ -76,20 +80,20 @@ function AngebotPage() {
           firma_plz: form.firma_plz,
           firma_ort: form.firma_ort,
           gleicheRechnungsadresse: form.gleicheRechnungsadresse,
-        },
+        }
       }
     );
 
-      if (response.data.success) {
-        alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
-      } else {
-        alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
+    if (response.data.success) {
+      alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
+    } else {
+      alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
+  }
+};
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!angebot) return <div className="p-4">Lade Angebot...</div>;
