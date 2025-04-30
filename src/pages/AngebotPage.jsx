@@ -44,7 +44,7 @@ function AngebotPage() {
         setError("Angebot konnte nicht geladen werden.");
       });
   }, [token]);
-
+ 
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
   // frontend/src/pages/AngebotPage.jsx
