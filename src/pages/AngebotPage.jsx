@@ -11,39 +11,41 @@ function AngebotPage() {
     nachname: "",
     telefon: "",
     email: "",
-    strasse: "",
-    plz: "",
-    ort: "",
     firmenname: "",
-    firma_strasse: "",
-    firma_plz: "",
-    firma_ort: "",
-    gleicheRechnungsadresse: false,
+    anschrift_strasse: "",
+    anschrift_plz: "",
+    anschrift_ort: "",
+    rechnungsanschrift_strasse: "",
+    rechnungsanschrift_plz: "",
+    rechnungsanschrift_ort: "",
+    gleicheRechnungsadresse: true, // true = keine Abweichung
     agb: false,
     datenschutz: false,
   });
 
-  useEffect(() => {
-    axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
-      .then((res) => {
-        setAngebot(res.data);
 
-        const lead = res.data.lead;
-        setForm((prev) => ({
-          ...prev,
-          vorname: lead.vorname || "",
-          nachname: lead.nachname || "",
-          email: lead.email || "",
-          telefon: lead.telefon || "",
-          firmenname: lead.firmenname || "",
-        }));
-      })
-      .catch((err) => {
-        console.error("Fehler beim Laden des Angebots:", err);
-        setError("Angebot konnte nicht geladen werden.");
-      });
-  }, [token]);
+    useEffect(() => {
+      axios
+        .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
+        .then((res) => {
+          setAngebot(res.data);
+    
+          const lead = res.data.lead;
+          setForm((prev) => ({
+            ...prev,
+            vorname: lead.vorname || "",
+            nachname: lead.nachname || "",
+            email: lead.email || "",
+            telefon: lead.telefon || "",
+            firmenname: lead.firmenname || "",
+          }));
+        })
+        .catch((err) => {
+          console.error("Fehler beim Laden des Angebots:", err);
+          setError("Angebot konnte nicht geladen werden.");
+        });
+    }, [token]);
+
  
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
@@ -51,7 +53,7 @@ function AngebotPage() {
 // (Ausschnitt: handleBuchen Funktion)
 
 const handleBuchen = async () => {
-  if (!form.vorname || !form.nachname || !form.email || !form.strasse || !form.plz || !form.ort) {
+  if (!form.vorname || !form.nachname || !form.email || !form.anschrift_strasse || !form.anschrift_plz || !form.anschrift_ort) {
     alert("Bitte fülle alle Pflichtfelder aus.");
     return;
   }
@@ -73,12 +75,12 @@ const handleBuchen = async () => {
           firmenname: form.firmenname,
         },
         rechnungsadresse: {
-          strasse: form.strasse,
-          plz: form.plz,
-          ort: form.ort,
-          firma_strasse: form.firma_strasse,
-          firma_plz: form.firma_plz,
-          firma_ort: form.firma_ort,
+          anschrift_strasse: form.anschrift_strasse,
+          anschrift_plz: form.anschrift_plz,
+          anschrift_ort: form.anschrift_ort,
+          rechnungsanschrift_strasse: form.gleicheRechnungsadresse ? null : form.rechnungsanschrift_strasse,
+          rechnungsanschrift_plz: form.gleicheRechnungsadresse ? null : form.rechnungsanschrift_plz,
+          rechnungsanschrift_ort: form.gleicheRechnungsadresse ? null : form.rechnungsanschrift_ort,
           gleicheRechnungsadresse: form.gleicheRechnungsadresse,
         }
       }
@@ -197,75 +199,59 @@ const handleBuchen = async () => {
       )}
 
 {/* RECHNUNGSADRESSE */}
-{(!istFirmenkunde || form.gleicheRechnungsadresse) && (
-  <>
-    <h2 className="text-xl font-semibold mb-2">Rechnungsadresse</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input
-        className="border p-2 rounded col-span-2"
-        placeholder="Straße & Nr.*"
-        value={form.strasse}
-        onChange={(e) => setForm({ ...form, strasse: e.target.value })}
-      />
-      <input
-        className="border p-2 rounded"
-        placeholder="PLZ*"
-        value={form.plz}
-        onChange={(e) => setForm({ ...form, plz: e.target.value })}
-      />
-      <input
-        className="border p-2 rounded"
-        placeholder="Ort*"
-        value={form.ort}
-        onChange={(e) => setForm({ ...form, ort: e.target.value })}
-      />
-    </div>
-  </>
-)}
-
-{/* Checkbox für Firmenkunden */}
-{istFirmenkunde && (
-    <div className="mt-2">
-      <label className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          checked={!form.gleicheRechnungsadresse}
-          onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
-        />
-        <span>Abweichende Rechnungsadresse</span>
-      </label>
+<h2 className="text-xl font-semibold mb-2">Anschrift</h2>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  <input
+    className="border p-2 rounded col-span-2"
+    placeholder="Straße & Nr.*"
+    value={form.anschrift_strasse}
+    onChange={(e) => setForm({ ...form, anschrift_strasse: e.target.value })}
+  />
+  <input
+    className="border p-2 rounded"
+    placeholder="PLZ*"
+    value={form.anschrift_plz}
+    onChange={(e) => setForm({ ...form, anschrift_plz: e.target.value })}
+  />
+  <input
+    className="border p-2 rounded"
+    placeholder="Ort*"
+    value={form.anschrift_ort}
+    onChange={(e) => setForm({ ...form, anschrift_ort: e.target.value })}
+  />
 </div>
 
+<label className="flex items-center space-x-2 mb-2">
+  <input
+    type="checkbox"
+    checked={!form.gleicheRechnungsadresse}
+    onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })}
+  />
+  <span>Abweichende Rechnungsadresse angeben</span>
+</label>
+
+{!form.gleicheRechnungsadresse && (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input
+      className="border p-2 rounded col-span-2"
+      placeholder="Rechnungsstraße & Nr.*"
+      value={form.rechnungsanschrift_strasse}
+      onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })}
+    />
+    <input
+      className="border p-2 rounded"
+      placeholder="Rechnungs-PLZ*"
+      value={form.rechnungsanschrift_plz}
+      onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })}
+    />
+    <input
+      className="border p-2 rounded"
+      placeholder="Rechnungs-Ort*"
+      value={form.rechnungsanschrift_ort}
+      onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })}
+    />
+  </div>
 )}
-
-{/* Abweichende Rechnungsadresse (nur wenn gewählt) */}
-{istFirmenkunde && !form.gleicheRechnungsadresse && (
-  <>
-    <h2 className="text-xl font-semibold mb-2">Abweichende Rechnungsadresse</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input
-        className="border p-2 rounded col-span-2"
-        placeholder="Straße & Nr.*"
-        value={form.strasse}
-        onChange={(e) => setForm({ ...form, strasse: e.target.value })}
-      />
-      <input
-        className="border p-2 rounded"
-        placeholder="PLZ*"
-        value={form.plz}
-        onChange={(e) => setForm({ ...form, plz: e.target.value })}
-      />
-      <input
-        className="border p-2 rounded"
-        placeholder="Ort*"
-        value={form.ort}
-        onChange={(e) => setForm({ ...form, ort: e.target.value })}
-      />
-    </div>
-  </>
-)}
-
-
 
 {/* AGB und Datenschutz */}
 <div className="space-y-2">
