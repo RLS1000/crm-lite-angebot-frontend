@@ -84,7 +84,7 @@ function AngebotPage() {
       );
 
       if (response.data.success) {
-        alert("✅ Dein Angebot wurde erfolgreich in eine Buchung umgewandelt!");
+        alert("✅ Du hast Dein Angebot erfolgreich bestätigt!");
       } else {
         alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
       }
@@ -95,7 +95,7 @@ function AngebotPage() {
   };
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
-  if (!angebot) return <div className="p-4">Lade Angebot...</div>;
+  if (!angebot) return <div className="p-4">Dein persönliches Angebot wird geladen...</div>;
 
   const gesamt = angebot.artikel.reduce(
     (sum, a) => sum + parseFloat(a.einzelpreis) * a.anzahl,
