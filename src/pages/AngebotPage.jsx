@@ -45,6 +45,7 @@ function AngebotPage() {
   }, [token]);
 
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
+  const istBestaetigt = angebot?.lead?.angebot_bestaetigt === true;
 
   const handleBuchen = async () => {
     if (
@@ -191,9 +192,16 @@ function AngebotPage() {
       </div>
 
       {/* Buchung */}
-      <button className="mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded w-full text-lg" onClick={handleBuchen}>
-        Angebot verbindlich buchen
-      </button>
+      <button
+  className={`mt-4 px-6 py-3 rounded w-full text-lg ${
+    istBestaetigt ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'
+  }`}
+  onClick={!istBestaetigt ? handleBuchen : null}
+  disabled={istBestaetigt}
+>
+  {istBestaetigt ? 'Angebot bereits bestätigt' : 'Angebot verbindlich buchen'}
+</button>
+
     </div>
   );
 }
