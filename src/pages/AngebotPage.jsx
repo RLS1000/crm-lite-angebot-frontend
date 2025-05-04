@@ -149,7 +149,7 @@ function AngebotPage() {
 
       {/* Anschrift */}
       <h2 className="text-xl font-semibold mb-2">Anschrift</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr.*" value={form.anschrift_strasse} onChange={(e) => setForm({ ...form, anschrift_strasse: e.target.value })} />
         <input className="border p-2 rounded" placeholder="PLZ*" value={form.anschrift_plz} onChange={(e) => setForm({ ...form, anschrift_plz: e.target.value })} />
         <input className="border p-2 rounded" placeholder="Ort*" value={form.anschrift_ort} onChange={(e) => setForm({ ...form, anschrift_ort: e.target.value })} />
@@ -162,12 +162,14 @@ function AngebotPage() {
       </label>
 
       {!form.gleicheRechnungsadresse && (
-        <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
+      <>  
+      <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
           <input className="border p-2 rounded" placeholder="PLZ (Rechung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
           <input className="border p-2 rounded" placeholder="Ort (Rechung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
         </div>
+      </>
       )}
 
       {/* AGB und Datenschutz */}
