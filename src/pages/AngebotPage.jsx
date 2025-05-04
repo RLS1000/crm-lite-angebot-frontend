@@ -129,7 +129,7 @@ function AngebotPage() {
       {/* Kontakt */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border p-2 rounded" placeholder="Vorname*" value={form.vorname} onChange={(e) => setForm({ ...form, vorname: e.target.value })} />
           <input className="border p-2 rounded" placeholder="Nachname*" value={form.nachname} onChange={(e) => setForm({ ...form, nachname: e.target.value })} />
           <input className="border p-2 rounded col-span-2" placeholder="Telefon" value={form.telefon} onChange={(e) => setForm({ ...form, telefon: e.target.value })} />
@@ -165,9 +165,9 @@ function AngebotPage() {
       <>  
       <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
-          <input className="border p-2 rounded" placeholder="PLZ (Rechung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
-          <input className="border p-2 rounded" placeholder="Ort (Rechung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
+          <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
+          <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
+          <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
         </div>
       </>
       )}
