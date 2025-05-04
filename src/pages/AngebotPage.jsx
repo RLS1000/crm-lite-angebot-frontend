@@ -27,6 +27,7 @@ function AngebotPage() {
     axios
       .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
       .then((res) => {
+        console.log("Angebotsdaten:", res.data); // 👈 hier prüfen
         setAngebot(res.data);
         const lead = res.data.lead;
         setForm((prev) => ({
