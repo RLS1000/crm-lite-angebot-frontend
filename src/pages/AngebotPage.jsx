@@ -83,11 +83,17 @@ function AngebotPage() {
         }
       );
 
-      if (response.data.success) {
-        alert("✅ Du hast Dein Angebot erfolgreich bestätigt!");
-      } else {
-        alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
-      }
+        if (response.data.message === 'Angebot wurde bereits bestätigt.') {
+          alert("⚠️ Dein Angebot wurde bereits bestätigt und kann nicht erneut bestätigt werden. Bitte kontaktiere uns für Rückfragen");
+          return;
+        }
+        
+        if (response.data.success) {
+          alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
+        } else {
+          alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
+        }
+
     } catch (error) {
       console.error(error);
       alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
