@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     port: 4173,
-    // ⬇️ ALLOW Railway Preview Domain
-    allowedHosts: ['crm-lite-angebot-frontend-production.up.railway.app']
+    // ✅ Erlaubte Hosts als Array von Strings
+    allowedHosts: [
+      'crm-lite-angebot-frontend-production.up.railway.app',
+      'angebot.mrknips.de'
+    ]
   }
 });
