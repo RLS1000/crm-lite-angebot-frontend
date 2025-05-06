@@ -8,7 +8,7 @@ export default defineConfig({
     // ✅ Erlaubte Hosts als Array von Strings
     allowedHosts: [
       'crm-lite-angebot-frontend-production.up.railway.app',
-      'angebot.mrknips.de'
+      'buchung.mrknips.de'
     ]
   }
 });
