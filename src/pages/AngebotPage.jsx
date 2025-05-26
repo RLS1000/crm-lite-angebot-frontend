@@ -170,14 +170,14 @@ function AngebotPage() {
       </label>
 
       {!form.gleicheRechnungsadresse && (
-      <>  
+      <React.Fragment>  
       <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
           <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
           <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
         </div>
-      </>
+      </React.Fragment>
       )}
 
       {/* AGB und Datenschutz */}
