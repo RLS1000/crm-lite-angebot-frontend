@@ -6,7 +6,7 @@ function AngebotPage() {
   const { token } = useParams();
   const [angebot, setAngebot] = useState(null);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // 🆕 Modal-Steuerung
+  const [showModal, setShowModal] = useState(false); // ✅ Modal-Status
   const [form, setForm] = useState({
     vorname: "",
     nachname: "",
@@ -48,7 +48,7 @@ function AngebotPage() {
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
   const istBestaetigt = angebot?.lead?.angebot_bestaetigt === true;
 
-  const handleBuchen = async () => {
+  const validateFormBeforeConfirm = () => {
     if (
       !form.vorname || !form.nachname || !form.email ||
       !form.anschrift_strasse || !form.anschrift_plz || !form.anschrift_ort
@@ -62,6 +62,10 @@ function AngebotPage() {
       return;
     }
 
+    setShowModal(true);
+  };
+
+  const handleBuchen = async () => {
     try {
       const response = await axios.post(
         `https://crm-lite-backend-production.up.railway.app/api/lead/${angebot.lead.id}/convert-to-booking`,
@@ -134,7 +138,6 @@ function AngebotPage() {
         <div className="mt-4 text-lg font-bold">Gesamtsumme: {gesamt} €</div>
       </div>
 
-      {/* Kontakt */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,17 +148,13 @@ function AngebotPage() {
         </div>
       </div>
 
-      {/* Firma */}
       {istFirmenkunde && (
         <div>
           <h2 className="text-xl font-semibold mb-2">Firmendaten</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input className="border p-2 rounded col-span-2" placeholder="Firmenname" value={form.firmenname} onChange={(e) => setForm({ ...form, firmenname: e.target.value })} />
-          </div>
+          <input className="border p-2 rounded col-span-2" placeholder="Firmenname" value={form.firmenname} onChange={(e) => setForm({ ...form, firmenname: e.target.value })} />
         </div>
       )}
 
-      {/* Anschrift */}
       <h2 className="text-xl font-semibold mb-2">Anschrift</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr.*" value={form.anschrift_strasse} onChange={(e) => setForm({ ...form, anschrift_strasse: e.target.value })} />
@@ -163,7 +162,6 @@ function AngebotPage() {
         <input className="border p-2 rounded" placeholder="Ort*" value={form.anschrift_ort} onChange={(e) => setForm({ ...form, anschrift_ort: e.target.value })} />
       </div>
 
-      {/* Abweichende Rechnungsadresse */}
       <label className="flex items-center space-x-2 mb-2">
         <input type="checkbox" checked={!form.gleicheRechnungsadresse} onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })} />
         <span>Abweichende Rechnungsadresse angeben</span>
@@ -180,62 +178,42 @@ function AngebotPage() {
         </>
       )}
 
-      {/* AGB und Datenschutz */}
       <div className="space-y-2">
         <label className="flex items-center space-x-2">
           <input type="checkbox" checked={form.agb} onChange={(e) => setForm({ ...form, agb: e.target.checked })} />
-          <span>Ich akzeptiere die <a href="https://mrknips.de/allgemeine-geschaeftsbedingungen/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">AGB</a>*</span>
+          <span>Ich akzeptiere die <a href="https://mrknips.de/allgemeine-geschaeftsbedingungen/" target="_blank" className="text-blue-600 underline">AGB</a>*</span>
         </label>
         <label className="flex items-center space-x-2">
           <input type="checkbox" checked={form.datenschutz} onChange={(e) => setForm({ ...form, datenschutz: e.target.checked })} />
-          <span>Ich akzeptiere die <a href="https://mrknips.de/datenschutzerklaerung/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Datenschutzbestimmungen</a>*</span>
+          <span>Ich akzeptiere die <a href="https://mrknips.de/datenschutzerklaerung/" target="_blank" className="text-blue-600 underline">Datenschutzbestimmungen</a>*</span>
         </label>
       </div>
 
-      {/* Buchung mit Bestätigungsdialog */}
+      {/* Buchungsbutton + Bestätigung */}
       {!istBestaetigt ? (
         <>
           <button
             className="mt-4 px-6 py-3 rounded w-full text-lg bg-green-600 hover:bg-green-700 text-white"
-            onClick={() => setShowModal(true)}
+            onClick={validateFormBeforeConfirm}
           >
             Angebot verbindlich buchen
           </button>
 
-          {/* Bestätigungs-Popup */}
           {showModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
                 <h2 className="text-xl font-semibold mb-4">Angebot bestätigen?</h2>
-                <p className="mb-4">
-                  Mit dem Klick auf „Jetzt bestätigen“ wird dein Angebot verbindlich gebucht. Möchtest du fortfahren?
-                </p>
+                <p className="mb-4">Mit dem Klick auf „Jetzt bestätigen“ wird dein Angebot verbindlich gebucht.</p>
                 <div className="flex justify-end space-x-4">
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                  >
-                    Abbrechen
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowModal(false);
-                      handleBuchen();
-                    }}
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-                  >
-                    Jetzt bestätigen
-                  </button>
+                  <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Abbrechen</button>
+                  <button onClick={() => { setShowModal(false); handleBuchen(); }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Jetzt bestätigen</button>
                 </div>
               </div>
             </div>
           )}
         </>
       ) : (
-        <button
-          className="mt-4 px-6 py-3 rounded w-full text-lg bg-gray-400 cursor-not-allowed"
-          disabled
-        >
+        <button className="mt-4 px-6 py-3 rounded w-full text-lg bg-gray-400 cursor-not-allowed" disabled>
           Angebot bereits bestätigt
         </button>
       )}
