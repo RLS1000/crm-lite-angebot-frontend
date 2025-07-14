@@ -6,6 +6,7 @@ function AngebotPage() {
   const { token } = useParams();
   const [angebot, setAngebot] = useState(null);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false); // 🆕 Modal-Steuerung
   const [form, setForm] = useState({
     vorname: "",
     nachname: "",
@@ -27,7 +28,6 @@ function AngebotPage() {
     axios
       .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
       .then((res) => {
-        console.log("Angebotsdaten:", res.data); // 👈 hier prüfen
         setAngebot(res.data);
         const lead = res.data.lead;
         setForm((prev) => ({
@@ -85,16 +85,16 @@ function AngebotPage() {
         }
       );
 
-        if (response.data.message === 'Angebot wurde bereits bestätigt.') {
-          alert("⚠️ Dein Angebot wurde bereits bestätigt und kann nicht erneut bestätigt werden. Bitte kontaktiere uns für Rückfragen");
-          return;
-        }
-        
-        if (response.data.success) {
-          alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
-        } else {
-          alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
-        }
+      if (response.data.message === 'Angebot wurde bereits bestätigt.') {
+        alert("⚠️ Dein Angebot wurde bereits bestätigt und kann nicht erneut bestätigt werden. Bitte kontaktiere uns für Rückfragen");
+        return;
+      }
+
+      if (response.data.success) {
+        alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
+      } else {
+        alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
+      }
 
     } catch (error) {
       console.error(error);
@@ -170,14 +170,14 @@ function AngebotPage() {
       </label>
 
       {!form.gleicheRechnungsadresse && (
-      <React.Fragment>  
-      <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
-          <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
-          <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
-        </div>
-      </React.Fragment>
+        <>
+          <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
+            <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
+            <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
+          </div>
+        </>
       )}
 
       {/* AGB und Datenschutz */}
@@ -192,17 +192,53 @@ function AngebotPage() {
         </label>
       </div>
 
-      {/* Buchung */}
-      <button
-  className={`mt-4 px-6 py-3 rounded w-full text-lg ${
-    istBestaetigt ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 text-white'
-  }`}
-  onClick={!istBestaetigt ? handleBuchen : null}
-  disabled={istBestaetigt}
->
-  {istBestaetigt ? 'Angebot bereits bestätigt' : 'Angebot verbindlich buchen'}
-</button>
+      {/* Buchung mit Bestätigungsdialog */}
+      {!istBestaetigt ? (
+        <>
+          <button
+            className="mt-4 px-6 py-3 rounded w-full text-lg bg-green-600 hover:bg-green-700 text-white"
+            onClick={() => setShowModal(true)}
+          >
+            Angebot verbindlich buchen
+          </button>
 
+          {/* Bestätigungs-Popup */}
+          {showModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+                <h2 className="text-xl font-semibold mb-4">Angebot bestätigen?</h2>
+                <p className="mb-4">
+                  Mit dem Klick auf „Jetzt bestätigen“ wird dein Angebot verbindlich gebucht. Möchtest du fortfahren?
+                </p>
+                <div className="flex justify-end space-x-4">
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                  >
+                    Abbrechen
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowModal(false);
+                      handleBuchen();
+                    }}
+                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                  >
+                    Jetzt bestätigen
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <button
+          className="mt-4 px-6 py-3 rounded w-full text-lg bg-gray-400 cursor-not-allowed"
+          disabled
+        >
+          Angebot bereits bestätigt
+        </button>
+      )}
     </div>
   );
 }
