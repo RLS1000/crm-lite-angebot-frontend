@@ -123,7 +123,7 @@ function AngebotPage() {
   if (confirmedMessage) {
     return (
       <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow space-y-4">
-        <h1 className="text-2xl font-bold">🎉 Bestätigung erfolgreich</h1>
+        <h1 className="text-2xl font-bold">Bestätigung erfolgreich</h1>
         <p>{confirmedMessage}</p>
       </div>
     );
