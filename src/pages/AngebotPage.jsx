@@ -6,7 +6,8 @@ function AngebotPage() {
   const { token } = useParams();
   const [angebot, setAngebot] = useState(null);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // ✅ Modal-Status
+  const [showModal, setShowModal] = useState(false);
+  const [confirmedMessage, setConfirmedMessage] = useState(null);
   const [form, setForm] = useState({
     vorname: "",
     nachname: "",
@@ -30,6 +31,12 @@ function AngebotPage() {
       .then((res) => {
         setAngebot(res.data);
         const lead = res.data.lead;
+
+        if (lead.angebot_bestaetigt && lead.angebot_bestaetigt_am) {
+          const datum = new Date(lead.angebot_bestaetigt_am).toLocaleDateString("de-DE");
+          setConfirmedMessage(`✅ Dein Angebot wurde am ${datum} erfolgreich bestätigt. Eine E-Mail mit allen Details wurde an ${lead.email} verschickt.`);
+        }
+
         setForm((prev) => ({
           ...prev,
           vorname: lead.vorname || "",
@@ -46,7 +53,6 @@ function AngebotPage() {
   }, [token]);
 
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
-  const istBestaetigt = angebot?.lead?.angebot_bestaetigt === true;
 
   const validateFormBeforeConfirm = () => {
     if (
@@ -90,12 +96,12 @@ function AngebotPage() {
       );
 
       if (response.data.message === 'Angebot wurde bereits bestätigt.') {
-        alert("⚠️ Dein Angebot wurde bereits bestätigt und kann nicht erneut bestätigt werden. Bitte kontaktiere uns für Rückfragen");
+        alert("⚠️ Dein Angebot wurde bereits bestätigt.");
         return;
       }
 
       if (response.data.success) {
-        alert("✅ Dein Angebot wurde erfolgreich bestätigt!");
+        window.location.reload(); // ✅ Seite neuladen bei Erfolg
       } else {
         alert("❌ Fehler bei der Umwandlung. Bitte später erneut versuchen.");
       }
@@ -113,6 +119,15 @@ function AngebotPage() {
     (sum, a) => sum + parseFloat(a.einzelpreis) * a.anzahl,
     0
   ).toFixed(2);
+
+  if (confirmedMessage) {
+    return (
+      <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow space-y-4">
+        <h1 className="text-2xl font-bold">🎉 Bestätigung erfolgreich</h1>
+        <p>{confirmedMessage}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow space-y-8">
@@ -189,8 +204,7 @@ function AngebotPage() {
         </label>
       </div>
 
-      {/* Buchungsbutton + Bestätigung */}
-      {!istBestaetigt ? (
+      {!angebot.lead.angebot_bestaetigt ? (
         <>
           <button
             className="mt-4 px-6 py-3 rounded w-full text-lg bg-green-600 hover:bg-green-700 text-white"
