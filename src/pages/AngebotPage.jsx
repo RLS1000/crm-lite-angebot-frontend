@@ -166,7 +166,7 @@ function AngebotPage() {
       {istFirmenkunde && (
         <div>
           <h2 className="text-xl font-semibold mb-2">Firmendaten</h2>
-          <input className="border p-2 rounded col-span-2" placeholder="Firmenname" value={form.firmenname} onChange={(e) => setForm({ ...form, firmenname: e.target.value })} />
+          <input className="border p-2 rounded col-span-2 w-full" placeholder="Firmenname" value={form.firmenname} onChange={(e) => setForm({ ...form, firmenname: e.target.value })} />
         </div>
       )}
 
