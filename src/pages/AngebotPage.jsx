@@ -147,6 +147,7 @@ function AngebotPage() {
           {angebot.artikel.map((a) => (
             <li key={a.id}>
               {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
+              {a.bemerkung && ( <div className="text-sm text-gray-600"> Hinweis: {a.bemerkung}</div> )}
             </li>
           ))}
         </ul>
