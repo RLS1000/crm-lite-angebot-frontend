@@ -344,7 +344,7 @@ function AngebotPage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold mb-2">Dein Angebot – Tag {idx + 1}</h2>
+              <h2 className="text-xl font-semibold mb-2">Dein Angebot</h2>
               {d.artikel?.length ? (
                 <>
                   <ul className="list-disc pl-6 space-y-1">
