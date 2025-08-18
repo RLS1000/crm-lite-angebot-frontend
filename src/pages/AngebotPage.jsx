@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-const [feedback, setFeedback] = useState("");
-const [feedbackEmail, setFeedbackEmail] = useState("");
-const [feedbackStatus, setFeedbackStatus] = useState(null); // {type:'ok'|'err', msg:string}
 
 function AngebotPage() {
   const { token } = useParams();
@@ -57,7 +54,7 @@ function AngebotPage() {
       });
   }, [token]);
 
-  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase()?.includes("firma") || false;
+  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
   const validateFormBeforeConfirm = () => {
     if (
@@ -112,29 +109,6 @@ function AngebotPage() {
       alert("❌ Netzwerkfehler. Bitte prüfe deine Internetverbindung oder kontaktiere den Support.");
     }
   };
-
-  const handleSendFeedback = async () => {
-  if (!feedback || feedback.trim().length < 3) {
-    setFeedbackStatus({ type: 'err', msg: 'Bitte eine Nachricht mit mindestens 3 Zeichen schreiben.' });
-    return;
-  }
-  try {
-    const response = await axios.post(
-      `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/feedback`,
-      { message: feedback.trim(), email: feedbackEmail?.trim() || undefined }
-    );
-
-    if (response.data?.success) {
-      setFeedback("");
-      setFeedbackStatus({ type: 'ok', msg: 'Danke! Deine Nachricht wurde übermittelt.' });
-    } else {
-      setFeedbackStatus({ type: 'err', msg: response.data?.message || 'Konnte nicht gesendet werden.' });
-    }
-  } catch (e) {
-    console.error(e);
-    setFeedbackStatus({ type: 'err', msg: 'Netzwerkfehler beim Senden. Bitte später erneut versuchen.' });
-  }
-};
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!angebot) return <div className="p-4">Dein persönliches Angebot wird geladen...</div>;
@@ -274,45 +248,6 @@ function AngebotPage() {
         </>
       )}
 
-            {/* --- Feedback ohne Bestätigung --- */}
-      <div className="border-t pt-6">
-        <h2 className="text-xl font-semibold mb-2">Fragen oder Änderungswünsche?</h2>
-        <p className="mb-3">
-          Du kannst uns hier eine Nachricht schicken – ganz ohne das Angebot bereits zu bestätigen.
-        </p>
-      
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            className="border p-2 rounded col-span-2 md:col-span-1"
-            placeholder="Deine E-Mail (optional)"
-            value={feedbackEmail}
-            onChange={(e) => setFeedbackEmail(e.target.value)}
-          />
-          <div className="col-span-2">
-            <textarea
-              className="border p-2 rounded w-full h-28"
-              placeholder="Deine Nachricht an uns …"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            />
-          </div>
-        </div>
-      
-        <div className="mt-3 flex items-center gap-3">
-          <button
-            className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white"
-            onClick={handleSendFeedback}
-          >
-            Nachricht senden
-          </button>
-          {feedbackStatus && (
-            <span className={feedbackStatus.type === 'ok' ? 'text-green-700' : 'text-red-700'}>
-              {feedbackStatus.msg}
-            </span>
-          )}
-        </div>
-      </div>
-      
       <div className="space-y-2">
         <label className="flex items-center space-x-2">
           <input type="checkbox" checked={form.agb} onChange={(e) => setForm({ ...form, agb: e.target.checked })} />
