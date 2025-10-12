@@ -74,7 +74,7 @@ function AngebotPage() {
   const handleBuchen = async () => {
     try {
       const response = await axios.post(
-        https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen,
+      `https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`,
         {
           kontakt: {
             vorname: form.vorname,
