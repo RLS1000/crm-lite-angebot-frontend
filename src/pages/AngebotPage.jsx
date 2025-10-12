@@ -28,7 +28,7 @@ function AngebotPage() {
 
   useEffect(() => {
     axios
-      .get(https://crm-lite-backend-production.up.railway.app/api/angebot/${token})
+      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
       .then((res) => {
         setAngebot(res.data);
         setGroupLeads(res.data.groupLeads || []); // 👈 Artikel kommen hier bereits mit
