@@ -5,7 +5,7 @@ import axios from "axios";
 function AngebotPage() {
   const { token } = useParams();
   const [angebot, setAngebot] = useState(null);
-  const [groupLeads, setGroupLeads] = useState([]);
+  const [groupLeads, setGroupLeads] = useState([]); // 👈 Multi-Day
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [confirmedMessage, setConfirmedMessage] = useState(null);
@@ -28,15 +28,15 @@ function AngebotPage() {
 
   useEffect(() => {
     axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}`)
+      .get(https://crm-lite-backend-production.up.railway.app/api/angebot/${token})
       .then((res) => {
         setAngebot(res.data);
-        setGroupLeads(res.data.groupLeads || []);
+        setGroupLeads(res.data.groupLeads || []); // 👈 Artikel kommen hier bereits mit
 
         const lead = res.data.lead;
         if (lead.angebot_bestaetigt && lead.angebot_bestaetigt_am) {
           const datum = new Date(lead.angebot_bestaetigt_am).toLocaleDateString("de-DE");
-          setConfirmedMessage(`✅ Dein Angebot wurde am ${datum} erfolgreich bestätigt. Eine E-Mail mit allen Details wurde an ${lead.email} verschickt.`);
+          setConfirmedMessage(✅ Dein Angebot wurde am ${datum} erfolgreich bestätigt. Eine E-Mail mit allen Details wurde an ${lead.email} verschickt.);
         }
 
         setForm((prev) => ({
@@ -57,7 +57,10 @@ function AngebotPage() {
   const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
   const validateFormBeforeConfirm = () => {
-    if (!form.vorname || !form.nachname || !form.email || !form.anschrift_strasse || !form.anschrift_plz || !form.anschrift_ort) {
+    if (
+      !form.vorname || !form.nachname || !form.email ||
+      !form.anschrift_strasse || !form.anschrift_plz || !form.anschrift_ort
+    ) {
       alert("Bitte fülle alle Pflichtfelder aus.");
       return;
     }
@@ -70,24 +73,27 @@ function AngebotPage() {
 
   const handleBuchen = async () => {
     try {
-      const response = await axios.post(`https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen`, {
-        kontakt: {
-          vorname: form.vorname,
-          nachname: form.nachname,
-          email: form.email,
-          telefon: form.telefon,
-          firmenname: form.firmenname,
-        },
-        rechnungsadresse: {
-          anschrift_strasse: form.anschrift_strasse,
-          anschrift_plz: form.anschrift_plz,
-          anschrift_ort: form.anschrift_ort,
-          rechnungsanschrift_strasse: form.gleicheRechnungsadresse ? form.anschrift_strasse : form.rechnungsanschrift_strasse,
-          rechnungsanschrift_plz: form.gleicheRechnungsadresse ? form.anschrift_plz : form.rechnungsanschrift_plz,
-          rechnungsanschrift_ort: form.gleicheRechnungsadresse ? form.anschrift_ort : form.rechnungsanschrift_ort,
-          gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+      const response = await axios.post(
+        https://crm-lite-backend-production.up.railway.app/api/angebot/${token}/bestaetigen,
+        {
+          kontakt: {
+            vorname: form.vorname,
+            nachname: form.nachname,
+            email: form.email,
+            telefon: form.telefon,
+            firmenname: form.firmenname,
+          },
+          rechnungsadresse: {
+            anschrift_strasse: form.anschrift_strasse,
+            anschrift_plz: form.anschrift_plz,
+            anschrift_ort: form.anschrift_ort,
+            rechnungsanschrift_strasse: form.gleicheRechnungsadresse ? form.anschrift_strasse : form.rechnungsanschrift_strasse,
+            rechnungsanschrift_plz: form.gleicheRechnungsadresse ? form.anschrift_plz : form.rechnungsanschrift_plz,
+            rechnungsanschrift_ort: form.gleicheRechnungsadresse ? form.anschrift_ort : form.rechnungsanschrift_ort,
+            gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+          }
         }
-      });
+      );
 
       if (response.data.message === 'Angebot wurde bereits bestätigt.') {
         alert("⚠️ Dein Angebot wurde bereits bestätigt.");
@@ -104,33 +110,120 @@ function AngebotPage() {
     }
   };
 
-  const sumForItems = (items = []) => items.reduce((sum, a) => sum + (parseFloat(a.einzelpreis) || 0) * (a.anzahl || 0), 0);
-
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!angebot) return <div className="p-4">Dein persönliches Angebot wird geladen...</div>;
-  if (confirmedMessage) return <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow space-y-4"><h1 className="text-2xl font-bold">Bestätigung erfolgreich</h1><p>{confirmedMessage}</p></div>;
 
-  const isGroup = Array.isArray(groupLeads) && groupLeads.length > 1;
-  const renderArtikelList = (artikel) => (
-    <ul className="list-disc pl-6 space-y-1">
-      {[...(artikel || [])]
-        .sort((a, b) => (a.artikel_name + a.variante_name).localeCompare(b.artikel_name + b.variante_name))
-        .map((a) => (
-          <li key={a.id}>
-            {a.anzahl}x {a.artikel_name} {a.variante_name && `– ${a.variante_name}`} – {parseFloat(a.einzelpreis).toFixed(2)} €
-            {a.bemerkung && <div className="text-sm text-gray-600">Hinweis: {a.bemerkung}</div>}
-          </li>
-        ))}
-    </ul>
-  );
+  // --- Helfer: Summen ---
+  const sumForItems = (items = []) =>
+    items.reduce((sum, a) => sum + (parseFloat(a.einzelpreis) || 0) * (a.anzahl || 0), 0);
+
+  const singleSum = sumForItems(angebot.artikel || []);
+  const multiTotal = groupLeads.reduce((tot, gl) => tot + sumForItems(gl.artikel || []), 0);
+
+  if (confirmedMessage) {
+    return (
+      <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow space-y-4">
+        <h1 className="text-2xl font-bold">Bestätigung erfolgreich</h1>
+        <p>{confirmedMessage}</p>
+      </div>
+    );
+  }
+
+  const isGroup = Array.isArray(groupLeads) && groupLeads.length > 1; // mehrere Tage
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow space-y-8">
       <h1 className="text-2xl font-bold">Angebot für deine Fotobox-Erinnerungen 📸</h1>
 
-      {/* Blöcke für Event, Location und Angebot wie zuvor */}
+      {isGroup && (
+        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+          <strong>Mehrere Tage in deinem Angebot</strong><br />
+          Unten findest du alle Tage deiner Anfrage – jeweils mit Eventdetails, Leistungen und Zwischensumme.
+        </div>
+      )}
 
-      {/* Kontaktblock */}
+      {!isGroup ? (
+        <>
+          {/* Single-Day Darstellung (wie gehabt) */}
+          <div className="space-y-2">
+  <h2 className="text-xl font-semibold">Dein Event</h2>
+  <div className="bg-gray-50 p-4 rounded border">
+    <p>
+      <strong>Datum & Uhrzeit:</strong><br />
+      {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")} &nbsp;&nbsp;
+      {angebot.lead.event_startzeit?.slice(0, 5)} – {angebot.lead.event_endzeit?.slice(0, 5) || "spätestens am nächsten Vormittag"}
+    </p>
+
+    <p className="mt-3">
+      <strong>Location:</strong><br />
+      {angebot.locationInfo ? (
+        <>
+          {angebot.locationInfo.name}<br />
+          {angebot.locationInfo.strasse}<br />
+          {angebot.locationInfo.plz} {angebot.locationInfo.ort}
+        </>
+      ) : (
+        angebot.lead.event_ort
+      )}
+    </p>
+  </div>
+</div>
+
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Dein Angebot</h2>
+            <ul className="list-disc pl-6 space-y-1">
+              {(angebot.artikel || []).map((a) => (
+                <li key={a.id}>
+                  {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
+                  {a.bemerkung && (<div className="text-sm text-gray-600">Hinweis: {a.bemerkung}</div>)}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 text-lg font-bold">Gesamtsumme: {singleSum.toFixed(2)} €</div>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Multi-Day Darstellung */}
+          {groupLeads.map((gl, idx) => {
+            const sub = sumForItems(gl.artikel || []);
+            return (
+              <div key={gl.id} className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-2">Dein Event – Tag {idx + 1}</h2>
+                <p><strong>Datum:</strong> {new Date(gl.event_datum).toLocaleDateString("de-DE")}</p>
+                <p><strong>Location:</strong> {gl.event_ort}</p>
+                <p><strong>Startzeit:</strong> {gl.event_startzeit ? gl.event_startzeit.slice(0, 5) : "-"}</p>
+                <p><strong>Endzeit:</strong> {gl.event_endzeit ? gl.event_endzeit.slice(0, 5) : "spätestens am nächsten Vormittag"}</p>
+
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold mb-2">Dein Angebot – Tag {idx + 1}</h3>
+                  {Array.isArray(gl.artikel) && gl.artikel.length > 0 ? (
+                    <>
+                      <ul className="list-disc pl-6 space-y-1">
+                        {gl.artikel.map((a) => (
+                          <li key={a.id}>
+                            {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
+                            {a.bemerkung && (<div className="text-sm text-gray-600">Hinweis: {a.bemerkung}</div>)}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-3 font-bold">Zwischensumme Tag {idx + 1}: {sub.toFixed(2)} €</div>
+                    </>
+                  ) : (
+                    <div className="text-sm text-gray-600">
+                      (Für diesen Tag sind aktuell keine Artikel hinterlegt.)
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+          <div className="mt-6 p-4 bg-gray-50 rounded border">
+            <div className="text-lg font-bold">Gesamtsumme (alle Tage): {multiTotal.toFixed(2)} €</div>
+          </div>
+        </>
+      )}
+
       <div>
         <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
