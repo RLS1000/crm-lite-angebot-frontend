@@ -36,7 +36,7 @@ function AngebotPage() {
         const lead = res.data.lead;
         if (lead.angebot_bestaetigt && lead.angebot_bestaetigt_am) {
           const datum = new Date(lead.angebot_bestaetigt_am).toLocaleDateString("de-DE");
-          setConfirmedMessage(✅ Dein Angebot wurde am ${datum} erfolgreich bestätigt. Eine E-Mail mit allen Details wurde an ${lead.email} verschickt.);
+          setConfirmedMessage(`✅ Dein Angebot wurde am ${datum} erfolgreich bestätigt. Eine E-Mail mit allen Details wurde an ${lead.email} verschickt.`);
         }
 
         setForm((prev) => ({
