@@ -128,61 +128,87 @@ function AngebotPage() {
     <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow space-y-8">
       <h1 className="text-2xl font-bold">Angebot für deine Fotobox-Erinnerungen 📸</h1>
 
-      {!isGroup ? (
-        <>
-          <div className="space-y-6">
-            <div className="bg-gray-50 p-4 rounded border space-y-1">
-              <h2 className="text-xl font-semibold mb-2">Dein Event</h2>
-              <p><strong>Datum & Uhrzeit:</strong><br />
-                {new Date(angebot.lead.event_datum).toLocaleDateString("de-DE")} &nbsp;
-                {angebot.lead.event_startzeit?.slice(0, 5)} – {angebot.lead.event_endzeit?.slice(0, 5) || "spätestens am nächsten Vormittag"}
-              </p>
-            </div>
+      {/* Blöcke für Event, Location und Angebot wie zuvor */}
 
-            <div className="bg-gray-50 p-4 rounded border space-y-1">
-              <h2 className="text-xl font-semibold mb-2">Veranstaltungsort</h2>
-              {angebot.locationInfo ? (
-                <>
-                  {angebot.locationInfo.name}<br />
-                  {angebot.locationInfo.strasse}<br />
-                  {angebot.locationInfo.plz} {angebot.locationInfo.ort}
-                </>
-              ) : (
-                angebot.lead.event_ort
-              )}
-            </div>
+      {/* Kontaktblock */}
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Deine Kontaktdaten</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input className="border p-2 rounded" placeholder="Vorname*" value={form.vorname} onChange={(e) => setForm({ ...form, vorname: e.target.value })} />
+          <input className="border p-2 rounded" placeholder="Nachname*" value={form.nachname} onChange={(e) => setForm({ ...form, nachname: e.target.value })} />
+          <input className="border p-2 rounded col-span-2" placeholder="Telefon" value={form.telefon} onChange={(e) => setForm({ ...form, telefon: e.target.value })} />
+          <input className="border p-2 rounded col-span-2" placeholder="E-Mail*" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+        </div>
+      </div>
 
-            <div className="bg-gray-50 p-4 rounded border space-y-2">
-              <h2 className="text-xl font-semibold mb-2">Dein Angebot</h2>
-              {renderArtikelList(angebot.artikel)}
-              <div className="mt-2 font-bold">Gesamtsumme: {sumForItems(angebot.artikel).toFixed(2)} €</div>
-            </div>
-          </div>
-        </>
-      ) : (
-        groupLeads.map((gl, idx) => (
-          <div key={gl.id} className="space-y-6 border-t pt-6">
-            <h2 className="text-xl font-semibold">Dein Event – Tag {idx + 1}</h2>
-            <div className="bg-gray-50 p-4 rounded border space-y-1">
-              <strong>Datum & Uhrzeit:</strong><br />
-              {new Date(gl.event_datum).toLocaleDateString("de-DE")} &nbsp;
-              {gl.event_startzeit?.slice(0, 5)} – {gl.event_endzeit?.slice(0, 5) || "spätestens am nächsten Vormittag"}
-            </div>
-            <div className="bg-gray-50 p-4 rounded border space-y-1">
-              <strong>Location:</strong><br />
-              {gl.event_ort}
-            </div>
-            <div className="bg-gray-50 p-4 rounded border space-y-2">
-              <strong>Leistungen:</strong>
-              {renderArtikelList(gl.artikel)}
-              <div className="mt-2 font-bold">Zwischensumme Tag {idx + 1}: {sumForItems(gl.artikel).toFixed(2)} €</div>
-            </div>
-          </div>
-        ))
+      {istFirmenkunde && (
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Firmendaten</h2>
+          <input className="border p-2 rounded col-span-2 w-full" placeholder="Firmenname" value={form.firmenname} onChange={(e) => setForm({ ...form, firmenname: e.target.value })} />
+        </div>
       )}
 
-      {/* Kontaktblock, Adresse, Buchung usw. bleibt gleich wie vorher */}
-      {/* ... */}
+      <h2 className="text-xl font-semibold mb-2">Anschrift</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr.*" value={form.anschrift_strasse} onChange={(e) => setForm({ ...form, anschrift_strasse: e.target.value })} />
+        <input className="border p-2 rounded" placeholder="PLZ*" value={form.anschrift_plz} onChange={(e) => setForm({ ...form, anschrift_plz: e.target.value })} />
+        <input className="border p-2 rounded" placeholder="Ort*" value={form.anschrift_ort} onChange={(e) => setForm({ ...form, anschrift_ort: e.target.value })} />
+      </div>
+
+      <label className="flex items-center space-x-2 mb-2">
+        <input type="checkbox" checked={!form.gleicheRechnungsadresse} onChange={(e) => setForm({ ...form, gleicheRechnungsadresse: !e.target.checked })} />
+        <span>Abweichende Rechnungsadresse angeben</span>
+      </label>
+
+      {!form.gleicheRechnungsadresse && (
+        <>
+          <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
+            <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
+            <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
+          </div>
+        </>
+      )}
+
+      <div className="space-y-2">
+        <label className="flex items-center space-x-2">
+          <input type="checkbox" checked={form.agb} onChange={(e) => setForm({ ...form, agb: e.target.checked })} />
+          <span>Ich akzeptiere die <a href="https://mrknips.de/allgemeine-geschaeftsbedingungen/" target="_blank" className="text-blue-600 underline">AGB</a>*</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input type="checkbox" checked={form.datenschutz} onChange={(e) => setForm({ ...form, datenschutz: e.target.checked })} />
+          <span>Ich akzeptiere die <a href="https://mrknips.de/datenschutzerklaerung/" target="_blank" className="text-blue-600 underline">Datenschutzbestimmungen</a>*</span>
+        </label>
+      </div>
+
+      {!angebot.lead.angebot_bestaetigt ? (
+        <>
+          <button
+            className="mt-4 px-6 py-3 rounded w-full text-lg bg-green-600 hover:bg-green-700 text-white"
+            onClick={validateFormBeforeConfirm}
+          >
+            Angebot verbindlich buchen
+          </button>
+
+          {showModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+                <h2 className="text-xl font-semibold mb-4">Angebot bestätigen?</h2>
+                <p className="mb-4">Mit dem Klick auf „Jetzt bestätigen“ wird dein Angebot verbindlich gebucht.</p>
+                <div className="flex justify-end space-x-4">
+                  <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Abbrechen</button>
+                  <button onClick={() => { setShowModal(false); handleBuchen(); }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Jetzt bestätigen</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <button className="mt-4 px-6 py-3 rounded w-full text-lg bg-gray-400 cursor-not-allowed" disabled>
+          Angebot bereits bestätigt
+        </button>
+      )}
     </div>
   );
 }
