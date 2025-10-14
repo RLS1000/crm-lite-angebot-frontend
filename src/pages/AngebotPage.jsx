@@ -180,7 +180,7 @@ function AngebotPage() {
                 </li>
             ))}
             </ul>
-            <div className="mt-4 text-lg font-bold">Gesamtsumme: {singleSum.toFixed(2)} €</div>
+            <div className="mt-4 text-lg font-bold text-right">Gesamtsumme: {singleSum.toFixed(2)} €</div>
           </div>
         </>
       ) : (
