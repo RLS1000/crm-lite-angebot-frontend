@@ -173,11 +173,12 @@ function AngebotPage() {
             <h2 className="text-xl font-semibold mb-2">Dein Angebot</h2>
             <ul className="list-disc pl-6 space-y-1">
               {(angebot.artikel || []).map((a) => (
-                <li key={a.id}>
-                  {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
-                  {a.bemerkung && (<div className="text-sm text-gray-600">Hinweis: {a.bemerkung}</div>)}
+                <li key={a.id} className="flex justify-between">
+                  <span>{a.anzahl}x {a.variante_name}</span>
+                  <span>{parseFloat(a.einzelpreis).toFixed(2)} €</span>
+                  {a.bemerkung && (<div className="text-sm text-gray-600 col-span-2">Hinweis: {a.bemerkung}</div>)}
                 </li>
-              ))}
+            ))}
             </ul>
             <div className="mt-4 text-lg font-bold">Gesamtsumme: {singleSum.toFixed(2)} €</div>
           </div>
