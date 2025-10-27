@@ -109,7 +109,7 @@ function KundePage() {
     
     {/* Linke Seite: Datum & Uhrzeit */}
     <div>
-      <p className="text-lg font-semibold">
+      <p>
         {new Date(event_datum).toLocaleDateString("de-DE", {
           weekday: "long",
           day: "2-digit",
