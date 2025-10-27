@@ -75,25 +75,33 @@ function KundePage() {
         <p className="text-sm text-gray-500">Deine Buchung bei Mr. Knips</p>
       </header>
 
-      {/* Auftraggeber */}
-<section className="space-y-1">
-  <h2 className="text-lg font-medium border-b pb-1">Auftraggeber</h2>
-  <p>{kunde_vorname} {kunde_nachname}</p>
-  {kunde_firma && <p>{kunde_firma}</p>}
-  <p>{kunde_email}</p>
-  {kunde_telefon && <p>{kunde_telefon}</p>}
+{/* Auftraggeber + Rechnungsadresse */}
+<section className="space-y-2">
+  <h2 className="text-lg font-medium border-b pb-1">Auftraggeber & Rechnungsadresse</h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+    
+    {/* Auftraggeber */}
+    <div>
+      <h3 className="font-semibold mb-1">Auftraggeber</h3>
+      <p>{kunde_vorname} {kunde_nachname}</p>
+      {kunde_firma && <p>{kunde_firma}</p>}
+      <p>{kunde_email}</p>
+      {kunde_telefon && <p>{kunde_telefon}</p>}
+    </div>
+
+    {/* Rechnungsadresse */}
+    <div>
+      <h3 className="font-semibold mb-1">Rechnungsadresse</h3>
+      {rechnungs_strasse && <p>{rechnungs_strasse}</p>}
+      {(rechnungs_plz || rechnungs_ort) && (
+        <p>{rechnungs_plz} {rechnungs_ort}</p>
+      )}
+    </div>
+
+  </div>
 </section>
 
-{/* Rechnungsadresse */}
-{(rechnungs_strasse || rechnungs_plz || rechnungs_ort) && (
-  <section className="space-y-1">
-    <h2 className="text-lg font-medium border-b pb-1">Rechnungsadresse</h2>
-    {rechnungs_strasse && <p>{rechnungs_strasse}</p>}
-    {(rechnungs_plz || rechnungs_ort) && (
-      <p>{rechnungs_plz} {rechnungs_ort}</p>
-    )}
-  </section>
-)}
+      
       {/* Eventdaten */}
 <section className="space-y-1">
   <h2 className="text-lg font-medium border-b pb-1">Event</h2>
