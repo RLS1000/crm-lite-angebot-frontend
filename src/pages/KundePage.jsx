@@ -109,7 +109,7 @@ function KundePage() {
     
     {/* Linke Seite: Datum & Uhrzeit */}
     <div>
-      <p className="text-xl font-semibold">
+      <p className="text-lg font-semibold">
         {new Date(event_datum).toLocaleDateString("de-DE", {
           weekday: "long",
           day: "2-digit",
@@ -125,6 +125,7 @@ function KundePage() {
     {/* Rechte Seite: Eventadresse */}
     {(event_location || event_anschrift_strasse || event_anschrift_plz || event_anschrift_ort) && (
       <div className="text-sm text-gray-700">
+        <h3 className="font-semibold mb-1">Location</h3>
         {event_location && <p className="font-medium">{event_location}</p>}
         {event_anschrift_strasse && <p>{event_anschrift_strasse}</p>}
         {(event_anschrift_plz || event_anschrift_ort) && (
