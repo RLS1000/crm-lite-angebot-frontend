@@ -1,4 +1,3 @@
-// src/pages/KundePage.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,8 +8,8 @@ function KundePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-  document.title = "Kundenübersicht – Mr. Knips";
-}, []);
+    document.title = "Kundenübersicht – Mr. Knips";
+  }, []);
 
   useEffect(() => {
     axios
@@ -28,6 +27,11 @@ function KundePage() {
   const { buchung, artikel } = data;
 
   const {
+    kunde_vorname,
+    kunde_nachname,
+    kunde_email,
+    kunde_telefon,
+    kunde_firma,
     event_datum,
     event_startzeit,
     event_endzeit,
@@ -45,16 +49,17 @@ function KundePage() {
   } = buchung;
 
   const artikelSumme = artikel.reduce((sum, a) => {
-  const preis = parseFloat(a.einzelpreis) || 0;
-  const anzahl = a.anzahl || 0;
-  return sum + preis * anzahl;}, 0);
+    const preis = parseFloat(a.einzelpreis) || 0;
+    const anzahl = a.anzahl || 0;
+    return sum + preis * anzahl;
+  }, 0);
 
   // Artikel-IDs
   const printIDs = [1, 2, 3];
   const qrIDs = [28];
   const galerieIDs = [27];
 
-  // Prüfungen ob relevante Artikel gebucht sind
+  // Artikel-Prüfungen
   const artikelIDs = artikel.map((a) => a.artikel_id);
   const hatPrint = artikelIDs.some((id) => printIDs.includes(id));
   const hatQR = artikelIDs.some((id) => qrIDs.includes(id));
@@ -66,6 +71,15 @@ function KundePage() {
         <h1 className="text-2xl font-semibold">Buchungsübersicht</h1>
         <p className="text-sm text-gray-500">Deine Buchung bei Mr. Knips</p>
       </header>
+
+      {/* Kontaktdaten */}
+      <section className="space-y-1">
+        <h2 className="text-lg font-medium border-b pb-1">Auftraggeber</h2>
+        <p>{kunde_vorname} {kunde_nachname}</p>
+        {kunde_firma && <p>{kunde_firma}</p>}
+        <p>{kunde_email}</p>
+        {kunde_telefon && <p>{kunde_telefon}</p>}
+      </section>
 
       {/* Eventdaten */}
       <section className="space-y-1">
@@ -88,38 +102,36 @@ function KundePage() {
         <h2 className="text-lg font-medium border-b pb-1">Gebuchte Leistungen</h2>
         <ul className="text-sm text-gray-700 space-y-1">
           {artikel.map((a) => (
-            <li key={a.id}>
-              {a.anzahl}x {a.variante_name} – {parseFloat(a.einzelpreis).toFixed(2)} €
-              {a.bemerkung && <div className="text-xs text-gray-500">Hinweis: {a.bemerkung}</div>}
+            <li key={a.id} className="flex justify-between">
+              <span>{a.anzahl}x {a.variante_name}</span>
+              <span className="text-right min-w-[60px]">{parseFloat(a.einzelpreis).toFixed(2)} €</span>
             </li>
           ))}
         </ul>
-        <p className="mt-2 font-semibold">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
+        <p className="mt-2 font-semibold text-right">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
       </section>
 
-             {/* Fotolayout */}
-        {artikel.some((a) => [1, 2, 3].includes(a.artikel_id)) && (
-          <section className="space-y-2">
-            <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
-        
-            {fotolayout_url ? (
-              <img src={fotolayout_url} alt="Fotolayout" className="max-w-xs border rounded" />
-            ) : (
-              <a
-                href="/anleitung/fotolayout.pdf"
-                className="text-sm text-blue-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Noch kein Layout hinterlegt – Anleitung ansehen
-              </a>
-            )}
-        
-            {layout_fertig && (
-              <p className="text-sm text-green-700">✔️ Fotolayout ist freigegeben</p>
-            )}
-          </section>
-        )}
+      {/* Fotolayout */}
+      {hatPrint && (
+        <section className="space-y-2">
+          <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
+          {fotolayout_url ? (
+            <img src={fotolayout_url} alt="Fotolayout" className="max-w-xs border rounded" />
+          ) : (
+            <a
+              href="/anleitung/fotolayout.pdf"
+              className="text-sm text-blue-600 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Noch kein Layout hinterlegt – Anleitung ansehen
+            </a>
+          )}
+          {layout_fertig && (
+            <p className="text-sm text-green-700">✔️ Fotolayout ist freigegeben</p>
+          )}
+        </section>
+      )}
 
       {/* QR-Layout */}
       {hatQR && (
@@ -132,6 +144,7 @@ function KundePage() {
               href="/anleitung/qrlayout.pdf"
               className="text-sm text-blue-600 hover:underline"
               target="_blank"
+              rel="noopener noreferrer"
             >
               Noch kein QR-Layout hinterlegt – Anleitung ansehen
             </a>
@@ -146,7 +159,6 @@ function KundePage() {
       {hatOnlineGalerie && (
         <section className="space-y-2">
           <h2 className="text-lg font-medium border-b pb-1">Online-Galerie</h2>
-
           {!galerie_aktiv ? (
             <p className="text-sm text-gray-500">Noch keine Galerie verfügbar</p>
           ) : (
@@ -162,7 +174,6 @@ function KundePage() {
               ) : (
                 <p className="text-sm text-gray-500">Link zur Galerie noch nicht hinterlegt</p>
               )}
-
               {galerie_passwort && (
                 <p className="text-sm text-gray-700">
                   <strong>Passwort:</strong> {galerie_passwort}
