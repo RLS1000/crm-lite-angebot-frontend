@@ -103,20 +103,36 @@ function KundePage() {
 
       
       {/* Eventdaten */}
-<section className="space-y-1">
+<section className="space-y-2">
   <h2 className="text-lg font-medium border-b pb-1">Event</h2>
-  <p>{new Date(event_datum).toLocaleDateString("de-DE")}</p>
-  <p>{event_startzeit} – {event_endzeit}</p>
-
-  {(event_location || event_anschrift_strasse || event_anschrift_plz || event_anschrift_ort) && (
-    <div className="text-sm text-gray-700 mt-2">
-      {event_location && <p className="font-medium">{event_location}</p>}
-      {event_anschrift_strasse && <p>{event_anschrift_strasse}</p>}
-      {(event_anschrift_plz || event_anschrift_ort) && (
-        <p>{event_anschrift_plz} {event_anschrift_ort}</p>
-      )}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+    
+    {/* Linke Seite: Datum & Uhrzeit */}
+    <div>
+      <p className="text-xl font-semibold">
+        {new Date(event_datum).toLocaleDateString("de-DE", {
+          weekday: "long",
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        })}
+      </p>
+      <p>
+        von {event_startzeit?.slice(0, 5)} bis {event_endzeit?.slice(0, 5)} Uhr
+      </p>
     </div>
-  )}
+
+    {/* Rechte Seite: Eventadresse */}
+    {(event_location || event_anschrift_strasse || event_anschrift_plz || event_anschrift_ort) && (
+      <div className="text-sm text-gray-700">
+        {event_location && <p className="font-medium">{event_location}</p>}
+        {event_anschrift_strasse && <p>{event_anschrift_strasse}</p>}
+        {(event_anschrift_plz || event_anschrift_ort) && (
+          <p>{event_anschrift_plz} {event_anschrift_ort}</p>
+        )}
+      </div>
+    )}
+  </div>
 </section>
 
       {/* Artikelübersicht */}
@@ -130,7 +146,7 @@ function KundePage() {
             </li>
           ))}
         </ul>
-        <p className="mt-2 font-semibold text-right">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
+       <p className="mt-4 pt-2 font-semibold text-right border-t border-gray-200">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
       </section>
 
       {/* Fotolayout */}
