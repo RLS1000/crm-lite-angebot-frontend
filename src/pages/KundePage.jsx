@@ -27,26 +27,29 @@ function KundePage() {
   const { buchung, artikel } = data;
 
   const {
-    kunde_vorname,
-    kunde_nachname,
-    kunde_email,
-    kunde_telefon,
-    kunde_firma,
-    event_datum,
-    event_startzeit,
-    event_endzeit,
-    event_location,
-    event_anschrift_strasse,
-    event_anschrift_plz,
-    event_anschrift_ort,
-    layout_fertig,
-    layout_qr_fertig,
-    fotolayout_url,
-    qr_layout_url,
-    online_galerie_url,
-    galerie_aktiv,
-    galerie_passwort,
-  } = buchung;
+  kunde_vorname,
+  kunde_nachname,
+  kunde_email,
+  kunde_telefon,
+  kunde_firma,
+  event_datum,
+  event_startzeit,
+  event_endzeit,
+  event_location,
+  event_anschrift_strasse,
+  event_anschrift_plz,
+  event_anschrift_ort,
+  layout_fertig,
+  layout_qr_fertig,
+  fotolayout_url,
+  qr_layout_url,
+  online_galerie_url,
+  galerie_aktiv,
+  galerie_passwort,
+  rechnungs_strasse,
+  rechnungs_plz,
+  rechnungs_ort
+} = buchung;
 
   const artikelSumme = artikel.reduce((sum, a) => {
     const preis = parseFloat(a.einzelpreis) || 0;
