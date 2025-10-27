@@ -104,7 +104,7 @@ function KundePage() {
       
       {/* Eventdaten */}
 <section className="space-y-2">
-  <h2 className="text-lg font-medium border-b pb-1">Event</h2>
+  <h2 className="font-semibold mb-1">Event</h2>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
     
     {/* Linke Seite: Datum & Uhrzeit */}
