@@ -108,7 +108,7 @@ function KundePage() {
       </div>
     </div>
   </section>
-
+  )}
       {/* Eventdaten */}
       <section className="space-y-1">
         <h2 className="text-lg font-medium border-b pb-1">Event</h2>
