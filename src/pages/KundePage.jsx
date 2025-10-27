@@ -31,15 +31,31 @@ function KundePage() {
     event_endzeit,
     kunde_vorname,
     kunde_nachname,
+    event_anschrift_ort,
+    event_anschrift_strasse,
+    event_anschrift_plz,
+    event_location,
     fotolayout_url,
     qr_layout_url,
     online_galerie_url,
   } = buchung;
 
-  // Gesamtsumme berechnen
   const artikelSumme = artikel.reduce((sum, a) => {
     return sum + (parseFloat(a.einzelpreis) || 0) * (a.anzahl || 0);
   }, 0);
+
+  // Helfer: hat der Kunde etwas bestimmtes gebucht?
+  const hatFotolayout = artikel.some((a) =>
+    a.variante_name.toLowerCase().includes("layout")
+  );
+
+  const hatQRLayout = artikel.some((a) =>
+    a.variante_name.toLowerCase().includes("qr")
+  );
+
+  const hatGalerie = artikel.some((a) =>
+    a.variante_name.toLowerCase().includes("galerie")
+  );
 
   return (
     <div className="p-8 max-w-3xl mx-auto text-gray-800 space-y-8">
@@ -60,6 +76,22 @@ function KundePage() {
         <p>
           <strong>Zeit:</strong> {event_startzeit} – {event_endzeit}
         </p>
+        {event_location && (
+          <>
+            <p>
+              <strong>Location:</strong> {event_location}
+            </p>
+          </>
+        )}
+        {(event_anschrift_strasse || event_anschrift_plz || event_anschrift_ort) && (
+          <p>
+            <strong>Anschrift:</strong><br />
+            {event_anschrift_strasse && <>{event_anschrift_strasse}<br /></>}
+            {(event_anschrift_plz || event_anschrift_ort) && (
+              <>{event_anschrift_plz} {event_anschrift_ort}</>
+            )}
+          </p>
+        )}
       </section>
 
       {/* Gebuchte Leistungen */}
@@ -89,60 +121,66 @@ function KundePage() {
       </section>
 
       {/* Fotolayout */}
-      <section className="space-y-1">
-        <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
-        {fotolayout_url ? (
-          <img
-            src={fotolayout_url}
-            alt="Fotolayout"
-            className="max-w-xs border rounded shadow-sm"
-          />
-        ) : (
-          <a
-            href="/anleitung/fotolayout.pdf"
-            className="text-sm text-blue-600 hover:underline"
-            target="_blank"
-          >
-            Noch kein Layout hinterlegt – Anleitung ansehen
-          </a>
-        )}
-      </section>
+      {hatFotolayout && (
+        <section className="space-y-1">
+          <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
+          {fotolayout_url ? (
+            <img
+              src={fotolayout_url}
+              alt="Fotolayout"
+              className="max-w-xs border rounded shadow-sm"
+            />
+          ) : (
+            <a
+              href="/anleitung/fotolayout.pdf"
+              className="text-sm text-blue-600 hover:underline"
+              target="_blank"
+            >
+              Noch kein Layout hinterlegt – Anleitung ansehen
+            </a>
+          )}
+        </section>
+      )}
 
       {/* QR-Code Layout */}
-      <section className="space-y-1">
-        <h2 className="text-lg font-medium border-b pb-1">QR-Code Layout</h2>
-        {qr_layout_url ? (
-          <img
-            src={qr_layout_url}
-            alt="QR-Layout"
-            className="max-w-xs border rounded shadow-sm"
-          />
-        ) : (
-          <a
-            href="/anleitung/qrlayout.pdf"
-            className="text-sm text-blue-600 hover:underline"
-            target="_blank"
-          >
-            Noch kein QR-Layout vorhanden – Anleitung ansehen
-          </a>
-        )}
-      </section>
+      {hatQRLayout && (
+        <section className="space-y-1">
+          <h2 className="text-lg font-medium border-b pb-1">QR-Code Layout</h2>
+          {qr_layout_url ? (
+            <img
+              src={qr_layout_url}
+              alt="QR-Layout"
+              className="max-w-xs border rounded shadow-sm"
+            />
+          ) : (
+            <a
+              href="/anleitung/qrlayout.pdf"
+              className="text-sm text-blue-600 hover:underline"
+              target="_blank"
+            >
+              Noch kein QR-Layout vorhanden – Anleitung ansehen
+            </a>
+          )}
+        </section>
+      )}
 
       {/* Online-Galerie */}
-      <section className="space-y-1">
-        <h2 className="text-lg font-medium border-b pb-1">Online-Galerie</h2>
-        {online_galerie_url ? (
-          <a
-            href={online_galerie_url}
-            target="_blank"
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Galerie öffnen
-          </a>
-        ) : (
-          <p className="text-sm text-gray-500">Noch keine Galerie verfügbar</p>
-        )}
-      </section>
+      {hatGalerie && (
+        <section className="space-y-1">
+          <h2 className="text-lg font-medium border-b pb-1">Online-Galerie</h2>
+          {online_galerie_url ? (
+            <a
+              href={online_galerie_url}
+              target="_blank"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Galerie öffnen
+            </a>
+          ) : (
+            <p className="text-sm text-gray-500">Noch keine Galerie verfügbar</p>
+          )}
+        </section>
+      )}
     </div>
   );
 }
