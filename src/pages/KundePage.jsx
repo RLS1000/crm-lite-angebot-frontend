@@ -9,6 +9,10 @@ function KundePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+  document.title = "Kundenübersicht – Mr. Knips";
+}, []);
+
+  useEffect(() => {
     axios
       .get(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}`)
       .then((res) => setData(res.data))
