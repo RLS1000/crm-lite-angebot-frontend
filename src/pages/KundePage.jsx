@@ -10,7 +10,7 @@ function KundePage() {
 
   useEffect(() => {
     axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/kunde/${token}`)
+      .get(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}`)
       .then((res) => setBuchung(res.data))
       .catch((err) => {
         console.error("❌ Fehler beim Laden der Buchungsdaten:", err);
