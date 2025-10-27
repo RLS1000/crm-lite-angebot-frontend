@@ -8,7 +8,7 @@ function KundePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    document.title = "Kundenübersicht – Mr. Knips";
+    document.title = "Kundenportal – Mr. Knips";
   }, []);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function KundePage() {
   }, [token]);
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
-  if (!data) return <div className="p-4">Lade deine Buchungsübersicht...</div>;
+  if (!data) return <div className="p-4">Lade dein Kundenportal...</div>;
 
   const { buchung, artikel } = data;
 
@@ -71,18 +71,18 @@ function KundePage() {
   return (
     <div className="p-8 max-w-3xl mx-auto text-gray-800 space-y-8">
       <header className="border-b pb-4 mb-4">
-        <h1 className="text-2xl font-semibold">Buchungsübersicht</h1>
+        <h1 className="text-2xl font-semibold">Kundenportal</h1>
         <p className="text-sm text-gray-500">Deine Buchung bei Mr. Knips</p>
       </header>
 
 {/* Auftraggeber + Rechnungsadresse */}
 <section className="space-y-2">
-  <h2 className="text-lg font-medium border-b pb-1">Auftraggeber & Rechnungsadresse</h2>
+  <h2 className="text-lg font-medium border-b pb-1">Auftraggeber</h2>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
     
     {/* Auftraggeber */}
     <div>
-      <h3 className="font-semibold mb-1">Auftraggeber</h3>
+      <h3 className="font-semibold mb-1">Kundendetails</h3>
       <p>{kunde_vorname} {kunde_nachname}</p>
       {kunde_firma && <p>{kunde_firma}</p>}
       <p>{kunde_email}</p>
@@ -109,8 +109,8 @@ function KundePage() {
     
     {/* Linke Seite: Datum & Uhrzeit */}
     <div>
-      <p>
-        {new Date(event_datum).toLocaleDateString("de-DE", {
+      <h3 className="font-semibold mb-1">Zeitraum</h3>
+      <p>{new Date(event_datum).toLocaleDateString("de-DE", {
           weekday: "long",
           day: "2-digit",
           month: "long",
@@ -125,7 +125,7 @@ function KundePage() {
     {/* Rechte Seite: Eventadresse */}
     {(event_location || event_anschrift_strasse || event_anschrift_plz || event_anschrift_ort) && (
       <div className="text-sm text-gray-700">
-        <h3 className="font-semibold mb-1">Location</h3>
+        <h3 className="font-semibold mb-1">Die Location</h3>
         {event_location && <p className="font-medium">{event_location}</p>}
         {event_anschrift_strasse && <p>{event_anschrift_strasse}</p>}
         {(event_anschrift_plz || event_anschrift_ort) && (
@@ -138,7 +138,7 @@ function KundePage() {
 
       {/* Artikelübersicht */}
       <section className="space-y-1">
-        <h2 className="text-lg font-medium border-b pb-1">Gebuchte Leistungen</h2>
+        <h2 className="text-lg font-medium border-b pb-1">Buchungsdetails</h2>
         <ul className="text-sm text-gray-700 space-y-1">
           {artikel.map((a) => (
             <li key={a.id} className="flex justify-between">
