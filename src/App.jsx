@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/angebot/:token" element={<AngebotPage />} />
-        <Route path="/kunde/:token" element={<KundePage />} /> {/* 👈 NEU */}
+        <Route path="/auftrag/:token" element={<KundePage />} /> {/* 👈 NEU */}
       </Routes>
     </BrowserRouter>
   );
