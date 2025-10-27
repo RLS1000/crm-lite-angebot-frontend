@@ -73,13 +73,41 @@ function KundePage() {
       </header>
 
       {/* Kontaktdaten */}
-      <section className="space-y-1">
-        <h2 className="text-lg font-medium border-b pb-1">Auftraggeber</h2>
-        <p>{kunde_vorname} {kunde_nachname}</p>
-        {kunde_firma && <p>{kunde_firma}</p>}
-        <p>{kunde_email}</p>
-        {kunde_telefon && <p>{kunde_telefon}</p>}
-      </section>
+<section className="space-y-1">
+  <h2 className="text-lg font-medium border-b pb-1">Auftraggeber</h2>
+  <p>{buchung.kunde_vorname} {buchung.kunde_nachname}</p>
+  {buchung.kunde_firma && <p>{buchung.kunde_firma}</p>}
+  <p>{buchung.kunde_email}</p>
+  {buchung.kunde_telefon && <p>{buchung.kunde_telefon}</p>}
+</section>
+
+{/* Anschrift & Rechnungsadresse */}
+{(buchung.anschrift_strasse || buchung.rechnungsanschrift_strasse) && (
+  <section className="space-y-2">
+    <h2 className="text-lg font-medium border-b pb-1">Adressen</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+      
+      {/* Anschrift */}
+      <div>
+        <h3 className="font-semibold mb-1">Anschrift</h3>
+        <p>{buchung.anschrift_strasse}</p>
+        <p>{buchung.anschrift_plz} {buchung.anschrift_ort}</p>
+      </div>
+
+      {/* Rechnungsadresse */}
+      <div>
+        <h3 className="font-semibold mb-1">Rechnungsadresse</h3>
+        {buchung.gleiche_rechnungsadresse ? (
+          <p>Identisch mit Anschrift</p>
+        ) : (
+          <>
+            <p>{buchung.rechnungsanschrift_strasse}</p>
+            <p>{buchung.rechnungsanschrift_plz} {buchung.rechnungsanschrift_ort}</p>
+          </>
+        )}
+      </div>
+    </div>
+  </section>
 
       {/* Eventdaten */}
       <section className="space-y-1">
