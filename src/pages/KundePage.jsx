@@ -88,26 +88,29 @@ function KundePage() {
         <p className="mt-2 font-semibold">Gesamtsumme: {buchung.artikel_summe} €</p>
       </section>
 
-      {/* Fotolayout */}
-      {hatPrint && (
-        <section className="space-y-2">
-          <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
-          {fotolayout_url ? (
-            <img src={fotolayout_url} alt="Fotolayout" className="max-w-xs border rounded" />
-          ) : (
-            <a
-              href="/anleitung/fotolayout.pdf"
-              className="text-sm text-blue-600 hover:underline"
-              target="_blank"
-            >
-              Noch kein Layout hinterlegt – Anleitung ansehen
-            </a>
-          )}
-          {layout_fertig && (
-            <p className="text-sm text-green-700">✔️ Layout ist freigegeben</p>
-          )}
-        </section>
-      )}
+             {/* Fotolayout */}
+        {artikel.some((a) => [1, 2, 3].includes(a.artikel_id)) && (
+          <section className="space-y-2">
+            <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
+        
+            {fotolayout_url ? (
+              <img src={fotolayout_url} alt="Fotolayout" className="max-w-xs border rounded" />
+            ) : (
+              <a
+                href="/anleitung/fotolayout.pdf"
+                className="text-sm text-blue-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Noch kein Layout hinterlegt – Anleitung ansehen
+              </a>
+            )}
+        
+            {layout_fertig && (
+              <p className="text-sm text-green-700">✔️ Fotolayout ist freigegeben</p>
+            )}
+          </section>
+        )}
 
       {/* QR-Layout */}
       {hatQR && (
