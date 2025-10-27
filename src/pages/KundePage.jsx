@@ -44,6 +44,11 @@ function KundePage() {
     galerie_passwort,
   } = buchung;
 
+  const artikelSumme = artikel.reduce((sum, a) => {
+  const preis = parseFloat(a.einzelpreis) || 0;
+  const anzahl = a.anzahl || 0;
+  return sum + preis * anzahl;}, 0);
+
   // Artikel-IDs
   const printIDs = [1, 2, 3];
   const qrIDs = [28];
@@ -89,7 +94,7 @@ function KundePage() {
             </li>
           ))}
         </ul>
-        <p className="mt-2 font-semibold">Gesamtsumme: {buchung.artikel_summe} €</p>
+        <p className="mt-2 font-semibold">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
       </section>
 
              {/* Fotolayout */}
