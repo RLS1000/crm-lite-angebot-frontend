@@ -330,92 +330,92 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
 {/* 3. QR-Code Layout */}
 {hatQR && (
-  <div className={`space-y-2 ${layout_qr_fertig ? "items-start" : ""}`}>
-    <h3
-      className={`font-medium text-base ${
-        layout_qr_fertig ? "w-[70%] text-left" : ""
-      }`}
-    >
-      QR-Sofortbild Layout
-    </h3>
+  <div className="w-[85%] mx-auto space-y-2">
+    <div className="space-y-2 text-left">
+      <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
-    <section
-      className={`rounded p-4 ${
-        layout_qr_fertig
-          ? "bg-gray-100 opacity-60 w-[70%] text-left"
-          : "bg-white"
-      }`}
-    >
-      {!layout_qr_fertig ? (
-        <>
-          <div className="mb-4">
-            <p className="text-sm text-gray-600">
-              Lade dein QR-Layout oder hinterlasse einen Wunsch:
-            </p>
-            <a
-              href="/anleitung/qr-layout.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
+      <section
+        className={`rounded p-4 ${
+          layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+        }`}
+      >
+        {!layout_qr_fertig ? (
+          <>
+            {/* Anleitung */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600">
+                Lade dein QR-Layout oder hinterlasse einen Wunsch:
+              </p>
+              <a
+                href="/anleitung/qr-layout.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                QR-Layout-Anleitung öffnen (PDF)
+              </a>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert("Danke! Deine QR-Layoutdaten wurden übermittelt.");
+              }}
+              className="grid grid-cols-1 gap-4"
             >
-              QR-Layout-Anleitung öffnen (PDF)
-            </a>
-          </div>
+              {/* Upload-Feld */}
+              <div>
+                <label className="block text-sm font-medium mb-1">QR-Layout hochladen</label>
+                <input
+                  type="file"
+                  name="qr_layout_upload"
+                  className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
+                    file:rounded file:border-0 file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  accept="image/*,.pdf"
+                />
+              </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Danke! Deine QR-Layoutdaten wurden übermittelt.");
-            }}
-            className="grid grid-cols-1 gap-4"
-          >
-            <div>
-              <label className="block text-sm font-medium mb-1">QR-Layout hochladen</label>
-              <input
-                type="file"
-                name="qr_layout_upload"
-                className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
-                file:rounded file:border-0 file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                accept="image/*,.pdf"
-              />
-            </div>
+              {/* Kommentar-Feld */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Anmerkung / Wunsch</label>
+                <textarea
+                  name="qr_wunsch"
+                  rows={3}
+                  className="w-full border px-3 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="z. B. Bitte wie das letzte Layout gestalten, mit Datum unten rechts."
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") e.preventDefault();
+                  }}
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Anmerkung / Wunsch</label>
-              <textarea
-                name="qr_wunsch"
-                rows={3}
-                className="w-full border px-3 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="z. B. Bitte wie das letzte Layout gestalten, mit Datum unten rechts."
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") e.preventDefault();
-                }}
-              />
-            </div>
-
-            <div className="text-right">
-              <button className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700">
-                Angaben speichern
-              </button>
-            </div>
-          </form>
-        </>
-      ) : (
-        <p className="text-sm text-green-700 flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-green-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          QR-Layout wurde bereits freigegeben.
-        </p>
-      )}
-    </section>
+              {/* Submit */}
+              <div className="text-right">
+                <button
+                  className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
+                >
+                  Angaben speichern
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <p className="text-sm text-green-700 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            QR-Layout wurde bereits freigegeben.
+          </p>
+        )}
+      </section>
+    </div>
   </div>
 )}
 
