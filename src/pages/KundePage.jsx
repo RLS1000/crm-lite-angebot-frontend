@@ -173,14 +173,18 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
          {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div className="space-y-2">
+  <div
+    className={`space-y-2 ${
+      layout_fertig ? "max-w-md mx-auto text-center" : ""
+    }`}
+  >
     <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
     <section
-  className={`rounded p-4 ${
-    layout_fertig ? "bg-gray-100 opacity-60 max-w-md mx-auto text-center" : "bg-white"
-  }`}
->
+      className={`rounded p-4 ${
+        layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+      }`}
+    >
       {!layout_fertig ? (
         <>
           {/* Anleitung */}
@@ -320,14 +324,18 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
  {/* 3. QR-Code Layout */}
 {hatQR && (
-  <div className="space-y-2">
+  <div
+    className={`space-y-2 ${
+      layout_qr_fertig ? "max-w-md mx-auto text-center" : ""
+    }`}
+  >
     <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
     <section
-  className={`rounded p-4 ${
-    layout_qr_fertig ? "bg-gray-100 opacity-60 max-w-md mx-auto text-center" : "bg-white"
-  }`}
->
+      className={`rounded p-4 ${
+        layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+      }`}
+    >
       {!layout_qr_fertig ? (
         <>
           {/* Anleitung */}
