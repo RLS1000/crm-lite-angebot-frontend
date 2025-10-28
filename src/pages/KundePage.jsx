@@ -171,18 +171,22 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </details>
           </section>
 
-         {/* 2. Layoutauswahl */}
+        {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div
-    className={`space-y-2 ${
-      layout_fertig ? "max-w-md mx-auto text-center" : ""
-    }`}
-  >
-    <h3 className="font-medium text-base">Fotodruck Layout</h3>
+  <div className={`space-y-2 ${layout_fertig ? "items-start" : ""}`}>
+    <h3
+      className={`font-medium text-base ${
+        layout_fertig ? "w-[70%] text-left" : ""
+      }`}
+    >
+      Fotodruck Layout
+    </h3>
 
     <section
       className={`rounded p-4 ${
-        layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+        layout_fertig
+          ? "bg-gray-100 opacity-60 w-[70%] text-left"
+          : "bg-white"
       }`}
     >
       {!layout_fertig ? (
@@ -202,6 +206,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </a>
           </div>
 
+          {/* Formular */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -213,13 +218,11 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             <div>
               <label className="block text-sm font-medium mb-1">Gewähltes Layout</label>
               <select
-              name="layout"
-              required
-              className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') e.preventDefault();
-              }}
-            >
+                name="layout"
+                required
+                className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+              >
                 <option value="">Bitte wählen…</option>
                 {[...Array(16)].map((_, i) => (
                   <option
@@ -240,9 +243,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 name="wunschtext"
                 className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="z. B. Sonja & Ryan"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
               />
             </div>
 
@@ -254,91 +255,95 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 name="datum"
                 className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder={new Date(event_datum).toLocaleDateString("de-DE")}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
+                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
               />
             </div>
 
-           {/* Farben mit Colorpicker */}
-<div>
-  <label className="block text-sm font-medium mb-1">Farbe wählen</label>
-  <div className="flex gap-2 items-center">
-    {/* Colorpicker */}
-    <input
-      type="color"
-      name="farben_picker"
-      id="farben_picker"
-      className="h-10 w-1/3 border rounded cursor-pointer"
-      onChange={(e) => {
-        const colorTextField = document.getElementById("farben_text");
-        if (colorTextField) colorTextField.value = e.target.value;
-      }}
-    />
-    
-    {/* Textfeld */}
-    <input
-  id="farben_text"
-  type="text"
-  name="farben"
-  className="h-10 w-2/3 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-  placeholder="#FFD700 (oder RGB/Hex)"
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const colorInput = document.getElementById("farben_picker");
-      if (colorInput) colorInput.value = e.target.value;
-    }
-  }}
-  onBlur={(e) => {
-    const value = e.target.value;
-    const colorInput = document.getElementById("farben_picker");
-
-    const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
-    if (hexRegex.test(value) && colorInput) {
-      colorInput.value = value;
-    }
-  }}
-/>
-  </div>
-</div>
+            {/* Farben mit Colorpicker */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Farbe wählen</label>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="color"
+                  name="farben_picker"
+                  id="farben_picker"
+                  className="h-10 w-1/3 border rounded cursor-pointer"
+                  onChange={(e) => {
+                    const colorTextField = document.getElementById("farben_text");
+                    if (colorTextField) colorTextField.value = e.target.value;
+                  }}
+                />
+                <input
+                  id="farben_text"
+                  type="text"
+                  name="farben"
+                  className="h-10 w-2/3 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="#FFD700 (oder RGB/Hex)"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      const colorInput = document.getElementById("farben_picker");
+                      if (colorInput) colorInput.value = e.target.value;
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.value;
+                    const colorInput = document.getElementById("farben_picker");
+                    const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
+                    if (hexRegex.test(value) && colorInput) {
+                      colorInput.value = value;
+                    }
+                  }}
+                />
+              </div>
+            </div>
 
             {/* Submit */}
             <div className="col-span-full text-right">
-              <button
-                className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
-              >
+              <button className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700">
                 Angaben speichern
               </button>
             </div>
           </form>
         </>
       ) : (
-        <p className="text-sm text-green-700">
-          ✔️ Layout wurde bereits freigegeben.
+        <p className="text-sm text-green-700 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 text-green-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          Layout wurde bereits freigegeben.
         </p>
       )}
     </section>
   </div>
 )}
 
- {/* 3. QR-Code Layout */}
+{/* 3. QR-Code Layout */}
 {hatQR && (
-  <div
-    className={`space-y-2 ${
-      layout_qr_fertig ? "max-w-md mx-auto text-center" : ""
-    }`}
-  >
-    <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
+  <div className={`space-y-2 ${layout_qr_fertig ? "items-start" : ""}`}>
+    <h3
+      className={`font-medium text-base ${
+        layout_qr_fertig ? "w-[70%] text-left" : ""
+      }`}
+    >
+      QR-Sofortbild Layout
+    </h3>
 
     <section
       className={`rounded p-4 ${
-        layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+        layout_qr_fertig
+          ? "bg-gray-100 opacity-60 w-[70%] text-left"
+          : "bg-white"
       }`}
     >
       {!layout_qr_fertig ? (
         <>
-          {/* Anleitung */}
           <div className="mb-4">
             <p className="text-sm text-gray-600">
               Lade dein QR-Layout oder hinterlasse einen Wunsch:
@@ -360,7 +365,6 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             }}
             className="grid grid-cols-1 gap-4"
           >
-            {/* Upload-Feld */}
             <div>
               <label className="block text-sm font-medium mb-1">QR-Layout hochladen</label>
               <input
@@ -373,7 +377,6 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               />
             </div>
 
-            {/* Kommentar-Feld */}
             <div>
               <label className="block text-sm font-medium mb-1">Anmerkung / Wunsch</label>
               <textarea
@@ -387,19 +390,25 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               />
             </div>
 
-            {/* Submit */}
             <div className="text-right">
-              <button
-                className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
-              >
+              <button className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700">
                 Angaben speichern
               </button>
             </div>
           </form>
         </>
       ) : (
-        <p className="text-sm text-green-700 mt-2">
-          ✔️ QR-Layout wurde bereits freigegeben.
+        <p className="text-sm text-green-700 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 text-green-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          QR-Layout wurde bereits freigegeben.
         </p>
       )}
     </section>
