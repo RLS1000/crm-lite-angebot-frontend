@@ -150,27 +150,85 @@ function KundePage() {
        <p className="mt-4 pt-2 font-semibold text-right border-t border-gray-200">Gesamtsumme: {artikelSumme.toFixed(2)} €</p>
       </section>
 
-      {/* Fotolayout */}
-      {hatPrint && (
-        <section className="space-y-2">
-          <h2 className="text-lg font-medium border-b pb-1">Fotolayout</h2>
-          {fotolayout_url ? (
-            <img src={fotolayout_url} alt="Fotolayout" className="max-w-xs border rounded" />
-          ) : (
-            <a
-              href="/anleitung/fotolayout.pdf"
-              className="text-sm text-blue-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Noch kein Layout hinterlegt – Anleitung ansehen
-            </a>
-          )}
-          {layout_fertig && (
-            <p className="text-sm text-green-700">✔️ Fotolayout ist freigegeben</p>
-          )}
-        </section>
-      )}
+      {/* Layoutauswahl */}
+{hatPrint && (
+  <section className="space-y-2">
+    <h2 className="text-lg font-medium border-b pb-1">Layoutauswahl</h2>
+    
+    <p className="text-sm text-gray-700">
+      Bitte wähle dein Wunschlayout aus und sende uns deine Angaben.
+    </p>
+
+    <a
+      href="/anleitung/fotolayout.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-sm text-blue-600 hover:underline"
+    >
+      Layout-Vorlage (PDF) ansehen
+    </a>
+
+    <form
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        // TODO: API-Call oder Logging hier einbauen
+        alert("Danke! Deine Layoutdaten wurden übermittelt.");
+      }}
+    >
+      <div>
+        <label className="block text-sm font-medium">Gewähltes Layout</label>
+        <input
+          type="text"
+          name="layout_name"
+          placeholder="z. B. L-032"
+          className="w-full border rounded px-2 py-1 text-sm"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Wunschtext</label>
+        <input
+          type="text"
+          name="wunschtext"
+          placeholder="z. B. Hochzeit Lisa & Tom"
+          className="w-full border rounded px-2 py-1 text-sm"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Datum im Layout</label>
+        <input
+          type="text"
+          name="layout_datum"
+          placeholder="z. B. 14.09.2025"
+          className="w-full border rounded px-2 py-1 text-sm"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Farben / Farbwunsch</label>
+        <input
+          type="text"
+          name="farbwunsch"
+          placeholder="z. B. Gold, Weiß"
+          className="w-full border rounded px-2 py-1 text-sm"
+        />
+      </div>
+
+      <div className="col-span-full">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
+        >
+          Angaben absenden
+        </button>
+      </div>
+    </form>
+  </section>
+)}
 
       {/* QR-Layout */}
       {hatQR && (
