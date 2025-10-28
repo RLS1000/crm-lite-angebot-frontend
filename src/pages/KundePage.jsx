@@ -177,10 +177,10 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
     <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
     <section
-      className={`rounded p-4 ${
-        layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
-      }`}
-    >
+  className={`rounded p-4 ${
+    layout_fertig ? "bg-gray-100 opacity-60 max-w-md mx-auto text-center" : "bg-white"
+  }`}
+>
       {!layout_fertig ? (
         <>
           {/* Anleitung */}
@@ -324,10 +324,10 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
     <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
     <section
-      className={`rounded p-4 ${
-        layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"
-      }`}
-    >
+  className={`rounded p-4 ${
+    layout_qr_fertig ? "bg-gray-100 opacity-60 max-w-md mx-auto text-center" : "bg-white"
+  }`}
+>
       {!layout_qr_fertig ? (
         <>
           {/* Anleitung */}
