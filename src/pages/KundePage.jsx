@@ -173,154 +173,158 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
         {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div className={`space-y-2 ${layout_fertig ? "items-start" : ""}`}>
-    <h3
-      className={`font-medium text-base ${
-        layout_fertig ? "w-[70%] text-left" : ""
-      }`}
-    >
-      Fotodruck Layout
-    </h3>
+  <div className="w-[85%] mx-auto space-y-2">
+    <div className="space-y-2 text-left">
+      <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
-    <section
-      className={`rounded p-4 ${
-        layout_fertig
-          ? "bg-gray-100 opacity-60 w-[70%] text-left"
-          : "bg-white"
-      }`}
-    >
-      {!layout_fertig ? (
-        <>
-          {/* Anleitung */}
-          <div className="mb-4">
-            <p className="text-sm text-gray-600">
-              Wähle dein Wunschlayout aus unserer PDF-Vorlage:
-            </p>
-            <a
-              href="/anleitung/fotolayout.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Layout-Anleitung öffnen (PDF)
-            </a>
-          </div>
-
-          {/* Formular */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Danke! Deine Layoutdaten wurden übermittelt.");
-            }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          >
-            {/* Layout Dropdown */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Gewähltes Layout</label>
-              <select
-                name="layout"
-                required
-                className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+      <section
+        className={`rounded p-4 ${
+          layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
+        }`}
+      >
+        {!layout_fertig ? (
+          <>
+            {/* Anleitung */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600">
+                Wähle dein Wunschlayout aus unserer PDF-Vorlage:
+              </p>
+              <a
+                href="/anleitung/fotolayout.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:underline"
               >
-                <option value="">Bitte wählen…</option>
-                {[...Array(16)].map((_, i) => (
-                  <option
-                    key={i}
-                    value={`Style ${String(i + 1).padStart(3, "0")}`}
-                  >
-                    Style {String(i + 1).padStart(3, "0")}
-                  </option>
-                ))}
-              </select>
+                Layout-Anleitung öffnen (PDF)
+              </a>
             </div>
 
-            {/* Wunschtext */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Wunschtext</label>
-              <input
-                type="text"
-                name="wunschtext"
-                className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="z. B. Sonja & Ryan"
-                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-              />
-            </div>
-
-            {/* Datum */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Datum im Layout</label>
-              <input
-                type="text"
-                name="datum"
-                className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder={new Date(event_datum).toLocaleDateString("de-DE")}
-                onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-              />
-            </div>
-
-            {/* Farben mit Colorpicker */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Farbe wählen</label>
-              <div className="flex gap-2 items-center">
-                <input
-                  type="color"
-                  name="farben_picker"
-                  id="farben_picker"
-                  className="h-10 w-1/3 border rounded cursor-pointer"
-                  onChange={(e) => {
-                    const colorTextField = document.getElementById("farben_text");
-                    if (colorTextField) colorTextField.value = e.target.value;
-                  }}
-                />
-                <input
-                  id="farben_text"
-                  type="text"
-                  name="farben"
-                  className="h-10 w-2/3 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="#FFD700 (oder RGB/Hex)"
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert("Danke! Deine Layoutdaten wurden übermittelt.");
+              }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              {/* Layout Dropdown */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Gewähltes Layout</label>
+                <select
+                  name="layout"
+                  required
+                  className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      const colorInput = document.getElementById("farben_picker");
-                      if (colorInput) colorInput.value = e.target.value;
-                    }
+                    if (e.key === 'Enter') e.preventDefault();
                   }}
-                  onBlur={(e) => {
-                    const value = e.target.value;
-                    const colorInput = document.getElementById("farben_picker");
-                    const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
-                    if (hexRegex.test(value) && colorInput) {
-                      colorInput.value = value;
-                    }
+                >
+                  <option value="">Bitte wählen…</option>
+                  {[...Array(16)].map((_, i) => (
+                    <option
+                      key={i}
+                      value={`Style ${String(i + 1).padStart(3, "0")}`}
+                    >
+                      Style {String(i + 1).padStart(3, "0")}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Wunschtext */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Wunschtext</label>
+                <input
+                  type="text"
+                  name="wunschtext"
+                  className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="z. B. Sonja & Ryan"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') e.preventDefault();
                   }}
                 />
               </div>
-            </div>
 
-            {/* Submit */}
-            <div className="col-span-full text-right">
-              <button className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700">
-                Angaben speichern
-              </button>
-            </div>
-          </form>
-        </>
-      ) : (
-        <p className="text-sm text-green-700 flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-green-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          Layout wurde bereits freigegeben.
-        </p>
-      )}
-    </section>
+              {/* Datum */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Datum im Layout</label>
+                <input
+                  type="text"
+                  name="datum"
+                  className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder={new Date(event_datum).toLocaleDateString("de-DE")}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') e.preventDefault();
+                  }}
+                />
+              </div>
+
+              {/* Farben mit Colorpicker */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Farbe wählen</label>
+                <div className="flex gap-2 items-center">
+                  {/* Colorpicker */}
+                  <input
+                    type="color"
+                    name="farben_picker"
+                    id="farben_picker"
+                    className="h-10 w-1/3 border rounded cursor-pointer"
+                    onChange={(e) => {
+                      const colorTextField = document.getElementById("farben_text");
+                      if (colorTextField) colorTextField.value = e.target.value;
+                    }}
+                  />
+
+                  {/* Textfeld */}
+                  <input
+                    id="farben_text"
+                    type="text"
+                    name="farben"
+                    className="h-10 w-2/3 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="#FFD700 (oder RGB/Hex)"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const colorInput = document.getElementById("farben_picker");
+                        if (colorInput) colorInput.value = e.target.value;
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const value = e.target.value;
+                      const colorInput = document.getElementById("farben_picker");
+                      const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
+                      if (hexRegex.test(value) && colorInput) {
+                        colorInput.value = value;
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Submit */}
+              <div className="col-span-full text-right">
+                <button
+                  className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
+                >
+                  Angaben speichern
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <p className="text-sm text-green-700 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Layout wurde bereits freigegeben.
+          </p>
+        )}
+      </section>
+    </div>
   </div>
 )}
 
