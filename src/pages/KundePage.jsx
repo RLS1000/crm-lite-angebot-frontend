@@ -154,7 +154,7 @@ function KundePage() {
 {hatPrint && (
   <section className="space-y-2">
     <h2 className="text-lg font-medium border-b pb-1">Layoutauswahl</h2>
-    
+
     <p className="text-sm text-gray-700">
       Bitte wähle dein Wunschlayout aus und sende uns deine Angaben.
     </p>
@@ -172,19 +172,28 @@ function KundePage() {
       className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2"
       onSubmit={(e) => {
         e.preventDefault();
-        // TODO: API-Call oder Logging hier einbauen
+        // TODO: später API-Call oder Logging hier einbauen
         alert("Danke! Deine Layoutdaten wurden übermittelt.");
       }}
     >
+      {/* Layout-Dropdown */}
       <div>
         <label className="block text-sm font-medium">Gewähltes Layout</label>
-        <input
-          type="text"
+        <select
           name="layout_name"
-          placeholder="z. B. L-032"
-          className="w-full border rounded px-2 py-1 text-sm"
           required
-        />
+          className="w-full border rounded px-2 py-1 text-sm"
+        >
+          <option value="">Bitte wählen…</option>
+          {[...Array(16)].map((_, i) => {
+            const layoutCode = `Style ${String(i + 1).padStart(3, "0")}`;
+            return (
+              <option key={layoutCode} value={layoutCode}>
+                {layoutCode}
+              </option>
+            );
+          })}
+        </select>
       </div>
 
       <div>
