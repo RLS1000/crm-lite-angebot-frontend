@@ -155,7 +155,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 ))}
               </ul>
               <div className="mt-3 pt-2 text-right border-t text-sm space-y-1">
-  {kundentyp === "privat" ? (
+  {kundentyp === "Privat" ? (
     <>
       <p>Gesamtsumme (inkl. USt.): <strong>{artikelSumme.toFixed(2)} €</strong></p>
       <p className="text-gray-500">inkl. 19 % USt.: {(artikelSumme / 1.19 * 0.19).toFixed(2)} €</p>
