@@ -477,7 +477,26 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 </div>
         </div>
       </div>
+
+            <footer className="mt-12 py-6 border-t text-center text-sm text-gray-600 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 space-y-2">
+          <p>&copy; {new Date().getFullYear()} Mr. Knips – Alle Rechte vorbehalten</p>
+          <div className="space-x-4">
+            <a href="https://www.mrknips.de" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Zur Hauptseite
+            </a>
+            <a href="https://www.mrknips.de/impressum/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Impressum
+            </a>
+            <a href="https://www.mrknips.de/datenschutzerklaerung/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Datenschutz
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
+
+    
   );
 }
 
