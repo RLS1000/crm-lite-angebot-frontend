@@ -173,7 +173,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
         {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div className="w-[85%] mx-auto space-y-2">
+  <div className={`${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
@@ -330,7 +330,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
 {/* 3. QR-Code Layout */}
 {hatQR && (
-  <div className="w-[85%] mx-auto space-y-2">
+  <div className={`${layout_qr_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
