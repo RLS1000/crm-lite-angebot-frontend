@@ -54,7 +54,7 @@ function AngebotPage() {
       });
   }, [token]);
 
-  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("Firma");
+  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
 
   const validateFormBeforeConfirm = () => {
     if (
@@ -120,6 +120,16 @@ function AngebotPage() {
   const singleSum = sumForItems(angebot.artikel || []);
   const multiTotal = groupLeads.reduce((tot, gl) => tot + sumForItems(gl.artikel || []), 0);
 
+const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
+const artikelSumme = singleSum; // für Single-Angebote
+const mwstBetrag = istFirmenkunde
+  ? artikelSumme * 0.19
+  : artikelSumme / 1.19 * 0.19;
+const bruttoBetrag = istFirmenkunde
+  ? artikelSumme * 1.19
+  : artikelSumme;
+
+  
   if (confirmedMessage) {
     return (
       <div className="p-6 max-w-2xl mx-auto bg-white rounded shadow space-y-4">
@@ -180,7 +190,20 @@ function AngebotPage() {
                 </li>
             ))}
             </ul>
-            <div className="mt-4 text-lg font-bold text-right">Gesamtsumme: {singleSum.toFixed(2)} €</div>
+            <div className="mt-4 pt-2 border-t text-sm text-right space-y-1">
+  {istFirmenkunde ? (
+    <>
+      <p>Gesamtsumme (netto): <strong>{artikelSumme.toFixed(2)} €</strong></p>
+      <p className="text-gray-500">zzgl. 19 % USt.: {mwstBetrag.toFixed(2)} €</p>
+      <p className="font-semibold">Gesamtbetrag (brutto): {bruttoBetrag.toFixed(2)} €</p>
+    </>
+  ) : (
+    <>
+      <p>Gesamtsumme (inkl. USt.): <strong>{bruttoBetrag.toFixed(2)} €</strong></p>
+      <p className="text-gray-500">inkl. 19 % USt.: {mwstBetrag.toFixed(2)} €</p>
+    </>
+  )}
+</div>
           </div>
         </>
       ) : (
