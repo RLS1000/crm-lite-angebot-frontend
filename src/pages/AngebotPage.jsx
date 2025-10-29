@@ -54,7 +54,7 @@ function AngebotPage() {
       });
   }, [token]);
 
-  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
+  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("Firma");
 
   const validateFormBeforeConfirm = () => {
     if (
