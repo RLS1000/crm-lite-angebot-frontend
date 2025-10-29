@@ -54,8 +54,6 @@ function AngebotPage() {
       });
   }, [token]);
 
-  const istFirmenkunde = angebot?.lead?.kundentyp?.toLowerCase().includes("firma");
-
   const validateFormBeforeConfirm = () => {
     if (
       !form.vorname || !form.nachname || !form.email ||
