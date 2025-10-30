@@ -11,6 +11,13 @@ function KundePage() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
+  const [layoutData, setLayoutData] = useState({
+  style: "",
+  text: "",
+  datum: "",
+  farbe: "#000000",
+  });
+
   useEffect(() => {
     document.title = "Kundenportal – Mr. Knips";
   }, []);
@@ -61,14 +68,7 @@ function KundePage() {
     const anzahl = a.anzahl || 0;
     return sum + preis * anzahl;
   }, 0);
-
-const [layoutData, setLayoutData] = useState({
-  style: "",
-  text: "",
-  datum: "",
-  farbe: "#000000",
-});
-  
+ 
 // IDs für Varianten
 const printIDs = [2, 4, 6];   // Fotobox MIT Druck
 const qrIDs = [23];           // QR-Galerie Variante
