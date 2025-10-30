@@ -62,6 +62,13 @@ function KundePage() {
     return sum + preis * anzahl;
   }, 0);
 
+const [layoutData, setLayoutData] = useState({
+  style: "",
+  text: "",
+  datum: "",
+  farbe: "#000000",
+});
+  
 // IDs für Varianten
 const printIDs = [2, 4, 6];   // Fotobox MIT Druck
 const qrIDs = [23];           // QR-Galerie Variante
@@ -171,7 +178,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </details>
           </section>
 
-        {/* 2. Layoutauswahl */}
+       {/* 2. Layoutauswahl */}
 {hatPrint && (
   <div className={`${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
     <div className="space-y-2 text-left">
@@ -182,9 +189,10 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
         }`}
       >
-        {!layout_fertig ? (
+        {/* 💡 LOGIK-BLOCK START */}
+        {(!fotolayout_style) ? (
+          // 🟢 1. Formular anzeigen, wenn noch kein Layout übermittelt wurde
           <>
-            {/* Anleitung */}
             <div className="mb-4">
               <p className="text-sm text-gray-600">
                 Wähle dein Wunschlayout aus unserer PDF-Vorlage:
@@ -200,9 +208,25 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </div>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                alert("Danke! Deine Layoutdaten wurden übermittelt.");
+                try {
+                  await axios.patch(
+                    `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                    {
+                      style: layoutData.style,
+                      text: layoutData.text,
+                      datum: layoutData.datum,
+                      farbe: layoutData.farbe,
+                      kundenfreigabe: false, // Wichtig: KEINE automatische Freigabe
+                    }
+                  );
+                  alert("Danke! Deine Layoutdaten wurden gespeichert.");
+                  window.location.reload();
+                } catch (err) {
+                  console.error("Fehler beim Speichern:", err);
+                  alert("❌ Leider konnte das Layout nicht gespeichert werden.");
+                }
               }}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
@@ -210,19 +234,16 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               <div>
                 <label className="block text-sm font-medium mb-1">Gewähltes Layout</label>
                 <select
-                  name="layout"
                   required
+                  value={layoutData.style}
+                  onChange={(e) =>
+                    setLayoutData((prev) => ({ ...prev, style: e.target.value }))
+                  }
                   className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault();
-                  }}
                 >
                   <option value="">Bitte wählen…</option>
                   {[...Array(16)].map((_, i) => (
-                    <option
-                      key={i}
-                      value={`Style ${String(i + 1).padStart(3, "0")}`}
-                    >
+                    <option key={i} value={`Style ${String(i + 1).padStart(3, "0")}`}>
                       Style {String(i + 1).padStart(3, "0")}
                     </option>
                   ))}
@@ -234,12 +255,12 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 <label className="block text-sm font-medium mb-1">Wunschtext</label>
                 <input
                   type="text"
-                  name="wunschtext"
+                  value={layoutData.text}
+                  onChange={(e) =>
+                    setLayoutData((prev) => ({ ...prev, text: e.target.value }))
+                  }
                   className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="z. B. Sonja & Ryan"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault();
-                  }}
                 />
               </div>
 
@@ -248,60 +269,32 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 <label className="block text-sm font-medium mb-1">Datum im Layout</label>
                 <input
                   type="text"
-                  name="datum"
+                  value={layoutData.datum}
+                  onChange={(e) =>
+                    setLayoutData((prev) => ({ ...prev, datum: e.target.value }))
+                  }
                   className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder={new Date(event_datum).toLocaleDateString("de-DE")}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') e.preventDefault();
-                  }}
                 />
               </div>
 
-              {/* Farben mit Colorpicker */}
+              {/* Farbe */}
               <div>
-                <label className="block text-sm font-medium mb-1">Farbe wählen</label>
-                <div className="flex gap-2 items-center">
-                  {/* Colorpicker */}
-                  <input
-                    type="color"
-                    name="farben_picker"
-                    id="farben_picker"
-                    className="h-10 w-1/3 border rounded cursor-pointer"
-                    onChange={(e) => {
-                      const colorTextField = document.getElementById("farben_text");
-                      if (colorTextField) colorTextField.value = e.target.value;
-                    }}
-                  />
-
-                  {/* Textfeld */}
-                  <input
-                    id="farben_text"
-                    type="text"
-                    name="farben"
-                    className="h-10 w-2/3 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="#FFD700 (oder RGB/Hex)"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const colorInput = document.getElementById("farben_picker");
-                        if (colorInput) colorInput.value = e.target.value;
-                      }
-                    }}
-                    onBlur={(e) => {
-                      const value = e.target.value;
-                      const colorInput = document.getElementById("farben_picker");
-                      const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
-                      if (hexRegex.test(value) && colorInput) {
-                        colorInput.value = value;
-                      }
-                    }}
-                  />
-                </div>
+                <label className="block text-sm font-medium mb-1">Farbe (Hex)</label>
+                <input
+                  type="color"
+                  value={layoutData.farbe}
+                  onChange={(e) =>
+                    setLayoutData((prev) => ({ ...prev, farbe: e.target.value }))
+                  }
+                  className="w-full h-10 cursor-pointer"
+                />
               </div>
 
               {/* Submit */}
               <div className="col-span-full text-right">
                 <button
+                  type="submit"
                   className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
                 >
                   Angaben speichern
@@ -309,20 +302,89 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               </div>
             </form>
           </>
-        ) : (
-          <p className="text-sm text-green-700 flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 text-green-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            Layout wurde bereits freigegeben.
+        ) : fotolayout_style && !fotolayout_link ? (
+          // 🟡 2. Layoutdaten wurden übermittelt, aber noch kein Bild
+          <p className="text-sm text-gray-700">
+            Danke! Wir gestalten dein persönliches Fotolayout auf Basis deiner Angaben.
           </p>
+        ) : fotolayout_link && !fotolayout_kundenfreigabe ? (
+          // 🟠 3. Bild ist da, aber noch nicht freigegeben
+          <>
+            <div className="mb-4">
+              <img
+                src={fotolayout_link}
+                alt="Layout-Vorschau"
+                className="rounded border max-w-full"
+              />
+            </div>
+
+            <div className="text-right">
+              <button
+                className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
+                onClick={async () => {
+                  try {
+                    await axios.patch(
+                      `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                      { kundenfreigabe: true }
+                    );
+                    alert("Vielen Dank für deine Freigabe!");
+                    window.location.reload();
+                  } catch (err) {
+                    console.error("Fehler bei Freigabe:", err);
+                    alert("❌ Freigabe konnte nicht gespeichert werden.");
+                  }
+                }}
+              >
+                Layout freigeben
+              </button>
+            </div>
+          </>
+        ) : fotolayout_link && fotolayout_kundenfreigabe ? (
+          // 🟢 4. Bild vorhanden & freigegeben
+          <>
+            <div className="mb-4">
+              <img
+                src={fotolayout_link}
+                alt="Freigegebenes Layout"
+                className="rounded border max-w-full"
+              />
+            </div>
+            <p className="text-sm text-green-700">
+              Freigegeben am {new Date(fotolayout_freigabe_am).toLocaleDateString("de-DE", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+          </>
+        ) : layout_fertig && fotolayout_link ? (
+          // 🟣 5. Admin hat fertig markiert (z. B. durch Appsmith)
+          <>
+            <div className="mb-4">
+              <img
+                src={fotolayout_link}
+                alt="Finales Layout"
+                className="rounded border max-w-full"
+              />
+            </div>
+            <p className="text-sm text-gray-700">
+              Layout wurde bereits erstellt.
+            </p>
+            {fotolayout_kundenfreigabe && fotolayout_freigabe_am && (
+              <p className="text-sm text-green-700 mt-1">
+                Freigegeben am {new Date(fotolayout_freigabe_am).toLocaleDateString("de-DE", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            )}
+          </>
+        ) : (
+          // 🧯 Fallback
+          <p className="text-sm text-gray-500">Status konnte nicht ermittelt werden.</p>
         )}
+        {/* 💡 LOGIK-BLOCK ENDE */}
       </section>
     </div>
   </div>
