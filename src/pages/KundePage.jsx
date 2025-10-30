@@ -143,7 +143,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             <p>{new Date(event_datum).toLocaleDateString("de-DE", {
               weekday: "long", day: "2-digit", month: "long", year: "numeric"
             })}</p>
-            <p>von {event_startzeit?.slice(0,5)} bis {event_endzeit?.slice(0,5)} Uhr</p>
+            <p>{event_startzeit?.slice(0,5)} bis {event_endzeit?.slice(0,5)} Uhr</p>
           </section>
 
           <section>
@@ -284,19 +284,32 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                   placeholder={new Date(event_datum).toLocaleDateString("de-DE")}
                 />
               </div>
+{/* Farbe */}
+<div>
+  <label className="block text-sm font-medium mb-1">Farbe (Hex)</label>
+  <div className="flex gap-2 items-center">
+    {/* Color Picker */}
+    <input
+      type="color"
+      value={layoutData.farbe}
+      onChange={(e) =>
+        setLayoutData((prev) => ({ ...prev, farbe: e.target.value }))
+      }
+      className="h-10 w-12 p-0 border rounded"
+    />
 
-              {/* Farbe */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Farbe (Hex)</label>
-                <input
-                  type="color"
-                  value={layoutData.farbe}
-                  onChange={(e) =>
-                    setLayoutData((prev) => ({ ...prev, farbe: e.target.value }))
-                  }
-                  className="w-full h-10 cursor-pointer"
-                />
-              </div>
+    {/* Textfeld für Hex-Wert */}
+    <input
+      type="text"
+      value={layoutData.farbe}
+      onChange={(e) =>
+        setLayoutData((prev) => ({ ...prev, farbe: e.target.value }))
+      }
+      className="flex-1 h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+      placeholder="#000000"
+    />
+  </div>
+</div>
 
               {/* Submit */}
               <div className="col-span-full text-right">
