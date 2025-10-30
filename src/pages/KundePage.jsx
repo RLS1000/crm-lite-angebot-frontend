@@ -60,7 +60,14 @@ function KundePage() {
     rechnungs_plz,
     rechnungs_ort,
     fotos_bereit,
-    fotodownload_link
+    fotodownload_link,
+    fotolayout_style,
+    fotolayout_text,
+    fotolayout_datum,
+    fotolayout_farbe,
+    fotolayout_link,
+    fotolayout_kundenfreigabe,
+    fotolayout_freigabe_am
   } = buchung;
 
   const artikelSumme = artikel.reduce((sum, a) => {
