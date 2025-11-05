@@ -332,7 +332,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
             <div className="mb-4">
               <img
-                src={fotolayout_link}
+                src={`${fotolayout_link}/download`}
                 alt="Layout-Vorschau"
                 className="rounded border max-w-full"
               />
