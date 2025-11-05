@@ -565,7 +565,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <p>&copy; {new Date().getFullYear()} Mr. Knips – Alle Rechte vorbehalten</p>
           <div className="space-x-4">
             <a href="https://www.mrknips.de" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Zur Hauptseite
+              Hauptseite
             </a>
             <a href="https://www.mrknips.de/impressum/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
               Impressum
