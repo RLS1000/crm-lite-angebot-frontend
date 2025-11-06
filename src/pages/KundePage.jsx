@@ -334,7 +334,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
              <img
                 src={`${fotolayout_link}/preview`}
                 alt="Layout-Vorschau"
-                className="max-w-full max-h-[400px] mx-auto block object-contain"
+                className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
             </div>
 
@@ -366,7 +366,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               <img
                 src={`${fotolayout_link}/preview`}
                 alt="Freigegebenes Layout"
-                className="max-w-full max-h-[400px] mx-auto block object-contain"
+                className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
             </div>
             <p className="text-sm text-green-700">
@@ -384,7 +384,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               <img
                 src={`${fotolayout_link}/preview`}
                 alt="Finales Layout"
-                className="max-w-full max-h-[400px] mx-auto block object-contain"
+                className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
             </div>
             <p className="text-sm text-gray-700">
