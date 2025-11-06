@@ -331,10 +331,10 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           // 🟠 3. Bild ist da, aber noch nicht freigegeben
           <>
            <div className="mb-4">
-              <img
+             <img
                 src={`${fotolayout_link}/preview`}
                 alt="Layout-Vorschau"
-                className="rounded border max-w-full max-h-[400px] object-contain mx-auto block"
+                className="rounded border max-w-full max-h-[400px] object-contain"
               />
             </div>
 
@@ -364,9 +364,9 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
             <div className="mb-4">
               <img
-                src={fotolayout_link}
+                src={`${fotolayout_link}/preview`}
                 alt="Freigegebenes Layout"
-                className="rounded border max-w-full"
+                className="rounded border max-w-full max-h-[400px] object-contain"
               />
             </div>
             <p className="text-sm text-green-700">
@@ -382,9 +382,9 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
             <div className="mb-4">
               <img
-                src={fotolayout_link}
+                src={`${fotolayout_link}/preview`}
                 alt="Finales Layout"
-                className="rounded border max-w-full"
+                className="rounded border max-w-full max-h-[400px] object-contain"
               />
             </div>
             <p className="text-sm text-gray-700">
