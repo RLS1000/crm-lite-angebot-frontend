@@ -330,11 +330,11 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
         ) : fotolayout_link && !fotolayout_kundenfreigabe ? (
           // 🟠 3. Bild ist da, aber noch nicht freigegeben
           <>
-            <div className="mb-4">
+           <div className="mb-4">
               <img
                 src={`${fotolayout_link}/download`}
                 alt="Layout-Vorschau"
-                className="rounded border max-w-full"
+                className="rounded border max-w-full max-h-[400px] object-contain mx-auto block"
               />
             </div>
 
