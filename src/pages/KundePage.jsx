@@ -600,7 +600,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
         </div>
       </footer>
 
-      // 📌 Modal-HTML ganz unten im JSX (z.B. vor </div>)
+      {/* 📌 Modal-HTML ganz unten im JSX (z.B. vor </div>) */}
       {showRechnungsModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
