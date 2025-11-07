@@ -12,7 +12,8 @@ function KundePage() {
 
   const [showRechnungsModal, setShowRechnungsModal] = useState(false);
   const [rechnungsForm, setRechnungsForm] = useState({
-    name: b.rechnungs_name || `${b.kunde_vorname} ${b.kunde_nachname}`,
+    name: '',
+    plz: '',
     strasse: '',
     plz: '',
     ort: '',
@@ -47,7 +48,7 @@ function KundePage() {
     if (data?.buchung) {
       const b = data.buchung;
       setRechnungsForm({
-        name: b.rechnungs_name || '',
+        name: b.rechnungs_name || `${b.kunde_vorname} ${b.kunde_nachname}`,
         strasse: b.rechnungs_strasse || '',
         plz: b.rechnungs_plz || '',
         ort: b.rechnungs_ort || '',
