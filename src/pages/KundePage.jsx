@@ -1,6 +1,6 @@
-// Start für das neue Layout – Struktur mit 2-Spalten-System
+{/* // // Start für das neue Layout – Struktur mit 2-Spalten-System
 // Linke Spalte: Stammdaten (1/3)
-// Rechte Spalte: Prozess / ToDos (2/3)
+// Rechte Spalte: Prozess / ToDos (2/3) */}
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -346,12 +346,12 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </form>
           </>
         ) : fotolayout_style && !fotolayout_link ? (
-          // 🟡 2. Layoutdaten wurden übermittelt, aber noch kein Bild
+          {/* // 🟡 2. Layoutdaten wurden übermittelt, aber noch kein Bild */}
           <p className="text-sm text-gray-700">
             Danke! Wir gestalten dein persönliches Fotolayout auf Basis deiner Angaben.
           </p>
         ) : fotolayout_link && !fotolayout_kundenfreigabe ? (
-          // 🟠 3. Bild ist da, aber noch nicht freigegeben
+         {/*  // 🟠 3. Bild ist da, aber noch nicht freigegeben */}
           <>
            <div className="mb-4">
              <img
@@ -383,7 +383,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </div>
           </>
         ) : fotolayout_link && fotolayout_kundenfreigabe ? (
-          // 🟢 4. Bild vorhanden & freigegeben
+         {/* // 🟢 4. Bild vorhanden & freigegeben */}
           <>
             <div className="mb-4">
               <img
@@ -401,7 +401,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </p>
           </>
         ) : layout_fertig && fotolayout_link ? (
-          // 🟣 5. Admin hat fertig markiert (z. B. durch Appsmith)
+          {/* // 🟣 5. Admin hat fertig markiert (z. B. durch Appsmith) */}
           <>
             <div className="mb-4">
               <img
