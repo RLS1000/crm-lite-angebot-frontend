@@ -9,13 +9,23 @@ import axios from "axios";
 function KundePage() {
   const { token } = useParams();
   const [data, setData] = useState(null);
+
+  const [showRechnungsModal, setShowRechnungsModal] = useState(false);
+  const [rechnungsForm, setRechnungsForm] = useState({
+    name: '',
+    strasse: '',
+    plz: '',
+    ort: '',
+    kostenstelle: ''
+  });
+  
   const [error, setError] = useState(null);
 
   const [layoutData, setLayoutData] = useState({
-  style: "",
-  text: "",
-  datum: "",
-  farbe: "#000000",
+    style: "",
+    text: "",
+    datum: "",
+    farbe: "#000000",
   });
 
   useEffect(() => {
@@ -31,6 +41,20 @@ function KundePage() {
         setError("Buchung konnte nicht geladen werden.");
       });
   }, [token]);
+
+  // Nach Laden der Daten (z.B. direkt nach setData(res.data))
+  useEffect(() => {
+    if (data?.buchung) {
+      const b = data.buchung;
+      setRechnungsForm({
+        name: b.rechnungs_name || `${b.kunde_vorname} ${b.kunde_nachname}`,
+        strasse: b.rechnungs_strasse || '',
+        plz: b.rechnungs_plz || '',
+        ort: b.rechnungs_ort || '',
+        kostenstelle: b.rechnungs_kostenstelle || ''
+      });
+    }
+  }, [data]);
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!data) return <div className="p-4">Lade dein Kundenportal...</div>;
@@ -118,13 +142,12 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <section>
             <div className="flex items-center justify-between mb-1">
               <h2 className="font-semibold text-sm text-gray-500">Rechnungsadresse</h2>
-              <a
-                href="#"
+              <button
+                onClick={() => setShowRechnungsModal(true)}
                 className="text-xs text-blue-600 hover:underline"
-                title="Adresse bearbeiten"
               >
                 Bearbeiten
-              </a>
+              </button>
             </div>
 
             <p className="font-medium">
@@ -576,6 +599,39 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           </div>
         </div>
       </footer>
+
+      // 📌 Modal-HTML ganz unten im JSX (z.B. vor </div>)
+      {showRechnungsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Rechnungsadresse bearbeiten</h3>
+            <div className="space-y-2">
+              <input className="border p-2 rounded w-full" placeholder="Name/Firma" value={rechnungsForm.name} onChange={e => setRechnungsForm({ ...rechnungsForm, name: e.target.value })} />
+              <input className="border p-2 rounded w-full" placeholder="Straße" value={rechnungsForm.strasse} onChange={e => setRechnungsForm({ ...rechnungsForm, strasse: e.target.value })} />
+              <div className="flex gap-2">
+                <input className="border p-2 rounded w-full" placeholder="PLZ" value={rechnungsForm.plz} onChange={e => setRechnungsForm({ ...rechnungsForm, plz: e.target.value })} />
+                <input className="border p-2 rounded w-full" placeholder="Ort" value={rechnungsForm.ort} onChange={e => setRechnungsForm({ ...rechnungsForm, ort: e.target.value })} />
+              </div>
+              <input className="border p-2 rounded w-full" placeholder="Kostenstelle (optional)" value={rechnungsForm.kostenstelle} onChange={e => setRechnungsForm({ ...rechnungsForm, kostenstelle: e.target.value })} />
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <button onClick={() => setShowRechnungsModal(false)} className="px-4 py-2 bg-gray-300 rounded">Abbrechen</button>
+              <button onClick={async () => {
+                if (!confirm('Rechnungsdaten wirklich speichern?')) return;
+                try {
+                  await axios.patch(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/rechnung`, rechnungsForm);
+                  alert('Rechnungsadresse gespeichert.');
+                  setShowRechnungsModal(false);
+                  window.location.reload();
+                } catch (err) {
+                  alert('Fehler beim Speichern.');
+                }
+              }} className="px-4 py-2 bg-blue-600 text-white rounded">Speichern</button>
+            </div>
+          </div>
+        </div>
+      )}
+      
     </div>
 
     
