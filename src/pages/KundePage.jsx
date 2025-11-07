@@ -338,7 +338,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               />
             </div>
 
-            <div className="text-right">
+            <div className="text-center">
               <button
                 className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
                 onClick={async () => {
