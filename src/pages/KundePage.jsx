@@ -1,6 +1,6 @@
-{/* // // Start für das neue Layout – Struktur mit 2-Spalten-System
+/ Start für das neue Layout – Struktur mit 2-Spalten-System
 // Linke Spalte: Stammdaten (1/3)
-// Rechte Spalte: Prozess / ToDos (2/3) */}
+// Rechte Spalte: Prozess / ToDos (2/3)
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,23 +9,13 @@ import axios from "axios";
 function KundePage() {
   const { token } = useParams();
   const [data, setData] = useState(null);
-
-  const [showRechnungsModal, setShowRechnungsModal] = useState(false);
-  const [rechnungsForm, setRechnungsForm] = useState({
-    name: '',
-    strasse: '',
-    plz: '',
-    ort: '',
-    kostenstelle: ''
-  });
-  
   const [error, setError] = useState(null);
 
   const [layoutData, setLayoutData] = useState({
-    style: "",
-    text: "",
-    datum: "",
-    farbe: "#000000",
+  style: "",
+  text: "",
+  datum: "",
+  farbe: "#000000",
   });
 
   useEffect(() => {
@@ -34,27 +24,13 @@ function KundePage() {
 
   useEffect(() => {
     axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}`)
+      .get(https://crm-lite-backend-production.up.railway.app/api/auftrag/${token})
       .then((res) => setData(res.data))
       .catch((err) => {
         console.error("Fehler beim Laden der Buchungsdaten:", err);
         setError("Buchung konnte nicht geladen werden.");
       });
   }, [token]);
-
-  // Nach Laden der Daten (z.B. direkt nach setData(res.data))
-  useEffect(() => {
-    if (data?.buchung) {
-      const b = data.buchung;
-      setRechnungsForm({
-        name: b.rechnungs_name || `${b.kunde_vorname} ${b.kunde_nachname}`,
-        strasse: b.rechnungs_strasse || '',
-        plz: b.rechnungs_plz || '',
-        ort: b.rechnungs_ort || '',
-        kostenstelle: b.rechnungs_kostenstelle || ''
-      });
-    }
-  }, [data]);
 
   if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!data) return <div className="p-4">Lade dein Kundenportal...</div>;
@@ -142,18 +118,19 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <section>
             <div className="flex items-center justify-between mb-1">
               <h2 className="font-semibold text-sm text-gray-500">Rechnungsadresse</h2>
-              <button
-                onClick={() => setShowRechnungsModal(true)}
+              <a
+                href="#"
                 className="text-xs text-blue-600 hover:underline"
+                title="Adresse bearbeiten"
               >
                 Bearbeiten
-              </button>
+              </a>
             </div>
 
             <p className="font-medium">
               {
                 rechnungs_name?.trim()
-                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : `${kunde_vorname} ${kunde_nachname}`)
+                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : ${kunde_vorname} ${kunde_nachname})
               }
             </p>
 
@@ -210,14 +187,14 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
        {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div className={`${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
+  <div className={${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
       <section
-        className={`rounded p-4 ${
+        className={rounded p-4 ${
           layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"
-        }`}
+        }}
       >
         {/* 💡 LOGIK-BLOCK START */}
         {(!fotolayout_style) ? (
@@ -242,7 +219,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 e.preventDefault();
                 try {
                   await axios.patch(
-                    `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                    https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout,
                     {
                       style: layoutData.style,
                       text: layoutData.text,
@@ -273,7 +250,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 >
                   <option value="">Bitte wählen…</option>
                   {[...Array(16)].map((_, i) => (
-                    <option key={i} value={`Style ${String(i + 1).padStart(3, "0")}`}>
+                    <option key={i} value={Style ${String(i + 1).padStart(3, "0")}}>
                       Style {String(i + 1).padStart(3, "0")}
                     </option>
                   ))}
@@ -346,16 +323,16 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </form>
           </>
         ) : fotolayout_style && !fotolayout_link ? (
-          {/* // 🟡 2. Layoutdaten wurden übermittelt, aber noch kein Bild */}
+          // 🟡 2. Layoutdaten wurden übermittelt, aber noch kein Bild
           <p className="text-sm text-gray-700">
             Danke! Wir gestalten dein persönliches Fotolayout auf Basis deiner Angaben.
           </p>
         ) : fotolayout_link && !fotolayout_kundenfreigabe ? (
-         {/*  // 🟠 3. Bild ist da, aber noch nicht freigegeben */}
+          // 🟠 3. Bild ist da, aber noch nicht freigegeben
           <>
            <div className="mb-4">
              <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Layout-Vorschau"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -367,7 +344,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 onClick={async () => {
                   try {
                     await axios.patch(
-                      `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                      https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout,
                       { kundenfreigabe: true }
                     );
                     alert("Vielen Dank für deine Freigabe!");
@@ -383,11 +360,11 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </div>
           </>
         ) : fotolayout_link && fotolayout_kundenfreigabe ? (
-         {/* // 🟢 4. Bild vorhanden & freigegeben */}
+          // 🟢 4. Bild vorhanden & freigegeben
           <>
             <div className="mb-4">
               <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Freigegebenes Layout"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -401,11 +378,11 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             </p>
           </>
         ) : layout_fertig && fotolayout_link ? (
-          {/* // 🟣 5. Admin hat fertig markiert (z. B. durch Appsmith) */}
+          // 🟣 5. Admin hat fertig markiert (z. B. durch Appsmith)
           <>
             <div className="mb-4">
               <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Finales Layout"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -435,14 +412,14 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
 {/* 3. QR-Code Layout */}
 {hatQR && (
-  <div className={`${layout_qr_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
+  <div className={${layout_qr_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
       <section
-        className={`rounded p-4 ${
+        className={rounded p-4 ${
           layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"
-        }`}
+        }}
       >
         {!layout_qr_fertig ? (
           <>
@@ -550,7 +527,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 <div className="space-y-2">
   <h3 className="font-medium text-base">Fotodownload</h3>
 
-  <section className={`rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}`}>
+  <section className={rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}}>
     {fotos_bereit ? (
       <div className="flex items-center justify-center gap-2">
         {/* Link-Icon */}
@@ -599,39 +576,6 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           </div>
         </div>
       </footer>
-
-      {/* 📌 Modal-HTML ganz unten im JSX (z.B. vor </div>) */}
-      {showRechnungsModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold mb-4">Rechnungsadresse bearbeiten</h3>
-            <div className="space-y-2">
-              <input className="border p-2 rounded w-full" placeholder="Name/Firma" value={rechnungsForm.name} onChange={e => setRechnungsForm({ ...rechnungsForm, name: e.target.value })} />
-              <input className="border p-2 rounded w-full" placeholder="Straße" value={rechnungsForm.strasse} onChange={e => setRechnungsForm({ ...rechnungsForm, strasse: e.target.value })} />
-              <div className="flex gap-2">
-                <input className="border p-2 rounded w-full" placeholder="PLZ" value={rechnungsForm.plz} onChange={e => setRechnungsForm({ ...rechnungsForm, plz: e.target.value })} />
-                <input className="border p-2 rounded w-full" placeholder="Ort" value={rechnungsForm.ort} onChange={e => setRechnungsForm({ ...rechnungsForm, ort: e.target.value })} />
-              </div>
-              <input className="border p-2 rounded w-full" placeholder="Kostenstelle oder Projekt (optional)" value={rechnungsForm.kostenstelle} onChange={e => setRechnungsForm({ ...rechnungsForm, kostenstelle: e.target.value })} />
-            </div>
-            <div className="flex justify-end gap-2 mt-6">
-              <button onClick={() => setShowRechnungsModal(false)} className="px-4 py-2 bg-gray-300 rounded">Abbrechen</button>
-              <button onClick={async () => {
-                if (!confirm('Rechnungsdaten wirklich speichern?')) return;
-                try {
-                  await axios.patch(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/rechnung`, rechnungsForm);
-                  alert('Rechnungsadresse gespeichert.');
-                  setShowRechnungsModal(false);
-                  window.location.reload();
-                } catch (err) {
-                  alert('Fehler beim Speichern.');
-                }
-              }} className="px-4 py-2 bg-blue-600 text-white rounded">Speichern</button>
-            </div>
-          </div>
-        </div>
-      )}
-      
     </div>
 
     
