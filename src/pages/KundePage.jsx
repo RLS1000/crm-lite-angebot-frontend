@@ -1,4 +1,4 @@
-// .Start für das neue Layout – Struktur mit 2-Spalten-System
+// Start für das neue Layout – Struktur mit 2-Spalten-System
 // Linke Spalte: Stammdaten (1/3)
 // Rechte Spalte: Prozess / ToDos (2/3)
 
