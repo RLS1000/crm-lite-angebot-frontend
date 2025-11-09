@@ -130,7 +130,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             <p className="font-medium">
               {
                 rechnungs_name?.trim()
-                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : ${kunde_vorname} ${kunde_nachname})
+                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : `${kunde_vorname} ${kunde_nachname}`)
               }
             </p>
 
