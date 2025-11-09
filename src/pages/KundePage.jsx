@@ -82,6 +82,7 @@ function KundePage() {
     rechnungs_strasse,
     rechnungs_plz,
     rechnungs_ort,
+    rechnungs_kostenstelle,
     fotos_bereit,
     fotodownload_link,
     fotolayout_style,
