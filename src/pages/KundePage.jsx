@@ -24,7 +24,7 @@ function KundePage() {
 
   useEffect(() => {
     axios
-      .get(`https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}`)
+      .get(https://crm-lite-backend-production.up.railway.app/api/auftrag/${token})
       .then((res) => setData(res.data))
       .catch((err) => {
         console.error("Fehler beim Laden der Buchungsdaten:", err);
@@ -130,7 +130,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             <p className="font-medium">
               {
                 rechnungs_name?.trim()
-                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : `${kunde_vorname} ${kunde_nachname}`)
+                || (kunde_firma && kunde_firma !== '-' ? kunde_firma : ${kunde_vorname} ${kunde_nachname})
               }
             </p>
 
@@ -187,12 +187,12 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
        {/* 2. Layoutauswahl */}
 {hatPrint && (
-  <div className={`${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
+  <div className={${layout_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">Fotodruck Layout</h3>
 
       <section
-        className={`rounded p-4 ${layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"}`}>
+        className={rounded p-4 ${layout_fertig ? "bg-gray-100 opacity-60" : "bg-white"}}>
         {/* 💡 LOGIK-BLOCK START */}
         {(!fotolayout_style) ? (
           // 🟢 1. Formular anzeigen, wenn noch kein Layout übermittelt wurde
@@ -216,7 +216,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 e.preventDefault();
                 try {
                   await axios.patch(
-                    `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                    https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout,
                     {
                       style: layoutData.style,
                       text: layoutData.text,
@@ -247,7 +247,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 >
                   <option value="">Bitte wählen…</option>
                   {[...Array(16)].map((_, i) => (
-                    <option key={i} value={`Style ${String(i + 1).padStart(3, "0")}`}>
+                    <option key={i} value={Style ${String(i + 1).padStart(3, "0")}}>
                       Style {String(i + 1).padStart(3, "0")}
                     </option>
                   ))}
@@ -329,7 +329,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
            <div className="mb-4">
              <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Layout-Vorschau"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -341,7 +341,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 onClick={async () => {
                   try {
                     await axios.patch(
-                      `https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout`,
+                      https://crm-lite-backend-production.up.railway.app/api/auftrag/${token}/layout,
                       { kundenfreigabe: true }
                     );
                     alert("Vielen Dank für deine Freigabe!");
@@ -361,7 +361,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
             <div className="mb-4">
               <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Freigegebenes Layout"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -379,7 +379,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <>
             <div className="mb-4">
               <img
-                src={`${fotolayout_link}/preview`}
+                src={${fotolayout_link}/preview}
                 alt="Finales Layout"
                 className="max-w-full max-h-[400px] mx-auto block object-contain rounded border border-gray-300 bg-gray-100 p-1"
               />
@@ -409,12 +409,12 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
 {/* 3. QR-Code Layout */}
 {hatQR && (
-  <div className={`${layout_qr_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2`}>
+  <div className={${layout_qr_fertig ? "w-[85%] mx-auto" : "w-full"} space-y-2}>
     <div className="space-y-2 text-left">
       <h3 className="font-medium text-base">QR-Sofortbild Layout</h3>
 
       <section
-        className={`rounded p-4 ${layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"}`}>
+        className={rounded p-4 ${layout_qr_fertig ? "bg-gray-100 opacity-60" : "bg-white"}}>
         {!layout_qr_fertig ? (
           <>
             {/* Anleitung */}
@@ -521,7 +521,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 <div className="space-y-2">
   <h3 className="font-medium text-base">Fotodownload</h3>
 
-  <section className={`rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}`}>
+  <section className={rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}}>
     {fotos_bereit ? (
       <div className="flex items-center justify-center gap-2">
         {/* Link-Icon */}
