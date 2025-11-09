@@ -297,6 +297,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                 <label className="block text-sm font-medium mb-1">Datum im Layout</label>
                 <input
                   type="text"
+                  required
                   value={layoutData.datum}
                   onChange={(e) =>
                     setLayoutData((prev) => ({ ...prev, datum: e.target.value }))
@@ -307,7 +308,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
               </div>
 {/* Farbe */}
 <div>
-  <label className="block text-sm font-medium mb-1">Farbe (Hex)</label>
+  <label className="block text-sm font-medium mb-1">Schriftfarbe (Hex)</label>
   <div className="flex gap-2 items-center">
     {/* Color Picker */}
     <input
@@ -606,7 +607,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           <input className="border p-2 rounded w-full" placeholder="PLZ" value={rechnungsForm.plz} onChange={e => setRechnungsForm({ ...rechnungsForm, plz: e.target.value })} />
           <input className="border p-2 rounded w-full" placeholder="Ort" value={rechnungsForm.ort} onChange={e => setRechnungsForm({ ...rechnungsForm, ort: e.target.value })} />
         </div>
-        <input className="border p-2 rounded w-full" placeholder="Kostenstelle (optional)" value={rechnungsForm.kostenstelle} onChange={e => setRechnungsForm({ ...rechnungsForm, kostenstelle: e.target.value })} />
+        <input className="border p-2 rounded w-full" placeholder="Kostenstelle / Projekt (optional)" value={rechnungsForm.kostenstelle} onChange={e => setRechnungsForm({ ...rechnungsForm, kostenstelle: e.target.value })} />
       </div>
       <div className="flex justify-end gap-2 mt-6">
         <button onClick={() => setShowRechnungsModal(false)} className="px-4 py-2 bg-gray-300 rounded">Abbrechen</button>
