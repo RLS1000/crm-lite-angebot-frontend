@@ -303,7 +303,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
                     setLayoutData((prev) => ({ ...prev, datum: e.target.value }))
                   }
                   className="w-full h-10 border px-3 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder={`z.B. ${new Date(event_datum).toLocaleDateString("de-DE")}`}}
+                  placeholder={`z.B. ${new Date(event_datum).toLocaleDateString("de-DE")}`}
                 />
               </div>
 {/* Farbe */}
