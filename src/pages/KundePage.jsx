@@ -158,6 +158,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
             <p>{rechnungs_strasse}</p>
             <p>{rechnungs_plz} {rechnungs_ort}</p>
+            <p>{rechnungs_kostenstelle}</p>
           </section>
 
           <section>
