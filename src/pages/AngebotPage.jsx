@@ -286,6 +286,15 @@ const bruttoBetrag = istFirmenkunde
         </>
       )}
 
+      {angebot?.lead?.zusatzvereinbarung?.trim() && (
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold mb-1">Zusatzvereinbarungen</h2>
+          <div className="bg-gray-50 border rounded p-4 text-sm whitespace-pre-line">
+            {angebot.lead.zusatzvereinbarung}
+          </div>
+        </div>
+      )}
+      
       <div className="space-y-2">
         <label className="flex items-center space-x-2">
           <input type="checkbox" checked={form.agb} onChange={(e) => setForm({ ...form, agb: e.target.checked })} />
