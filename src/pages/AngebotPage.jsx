@@ -22,6 +22,7 @@ function AngebotPage() {
     rechnungsanschrift_plz: "",
     rechnungsanschrift_ort: "",
     gleicheRechnungsadresse: true,
+    rechnungs_kostenstelle: "",
     agb: false,
     datenschutz: false,
   });
@@ -46,6 +47,7 @@ function AngebotPage() {
           email: lead.email || "",
           telefon: lead.telefon || "",
           firmenname: lead.firmenname || "",
+          rechnungs_kostenstelle: "",
         }));
       })
       .catch((err) => {
@@ -89,6 +91,7 @@ function AngebotPage() {
             rechnungsanschrift_plz: form.gleicheRechnungsadresse ? form.anschrift_plz : form.rechnungsanschrift_plz,
             rechnungsanschrift_ort: form.gleicheRechnungsadresse ? form.anschrift_ort : form.rechnungsanschrift_ort,
             gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+            rechnungs_kostenstelle: form.rechnungs_kostenstelle || null,
           }
         }
       );
@@ -282,6 +285,16 @@ const bruttoBetrag = istFirmenkunde
             <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
             <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
             <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm font-medium mb-1">Kostenstelle / Projekt (optional)</label>
+            <input
+              type="text"
+              className="border p-2 rounded w-full"
+              placeholder="z. B. 123456"
+              value={form.rechnungs_kostenstelle}
+              onChange={(e) => setForm({ ...form, rechnungs_kostenstelle: e.target.value })}
+            />
           </div>
         </>
       )}
