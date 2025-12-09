@@ -18,6 +18,7 @@ function AngebotPage() {
     anschrift_strasse: "",
     anschrift_plz: "",
     anschrift_ort: "",
+    rechnungs_name: "", 
     rechnungsanschrift_strasse: "",
     rechnungsanschrift_plz: "",
     rechnungsanschrift_ort: "",
@@ -91,6 +92,7 @@ function AngebotPage() {
             rechnungsanschrift_plz: form.gleicheRechnungsadresse ? form.anschrift_plz : form.rechnungsanschrift_plz,
             rechnungsanschrift_ort: form.gleicheRechnungsadresse ? form.anschrift_ort : form.rechnungsanschrift_ort,
             gleicheRechnungsadresse: form.gleicheRechnungsadresse,
+            rechnungs_name: form.rechnungs_name || null,
             rechnungs_kostenstelle: form.rechnungs_kostenstelle || null,
           }
         }
@@ -282,6 +284,7 @@ const bruttoBetrag = istFirmenkunde
         <>
           <h2 className="text-xl font-semibold mb-2">Rechnungsanschrift</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input className="border p-2 rounded col-span-2 w-full" placeholder="Rechnungsname (Alternativer Firmenname )" value={form.rechnungs_name} onChange={(e) => setForm({ ...form, rechnungs_name: e.target.value })} />
             <input className="border p-2 rounded col-span-2" placeholder="Straße & Nr. (Rechnung)*" value={form.rechnungsanschrift_strasse} onChange={(e) => setForm({ ...form, rechnungsanschrift_strasse: e.target.value })} />
             <input className="border p-2 rounded" placeholder="PLZ (Rechnung)*" value={form.rechnungsanschrift_plz} onChange={(e) => setForm({ ...form, rechnungsanschrift_plz: e.target.value })} />
             <input className="border p-2 rounded" placeholder="Ort (Rechnung)*" value={form.rechnungsanschrift_ort} onChange={(e) => setForm({ ...form, rechnungsanschrift_ort: e.target.value })} />
