@@ -559,7 +559,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 <div className="space-y-2">
   <h3 className="font-medium text-base">Fotodownload</h3>
 
-  <section className={`rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}`}>
+  <section className="rounded p-4 bg-white">
     {fotos_bereit ? (
       <div className="flex justify-center">
         <a
