@@ -10,6 +10,9 @@ function KundePage() {
   const { token } = useParams();
   const [data, setData] = useState(null);
 
+  const [showGalerieModal, setShowGalerieModal] = useState(false);
+  const [copied, setCopied] = useState(null); // "link" | "passwort"
+  
   const [showRechnungsModal, setShowRechnungsModal] = useState(false);
   const [rechnungsForm, setRechnungsForm] = useState({
     name: '',
@@ -27,6 +30,12 @@ function KundePage() {
   datum: "",
   farbe: "#000000",
   });
+
+  const copyToClipboard = async (text, type) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(null), 1500);
+  };
 
   useEffect(() => {
     document.title = "Kundenportal – Mr. Knips";
@@ -77,6 +86,8 @@ function KundePage() {
     kundentyp,
     online_galerie_url,
     galerie_aktiv,
+    onlinegalerie_feedbacklink,
+    onlinegalerie_passwort,
     galerie_passwort,
     rechnungs_name,
     rechnungs_strasse,
@@ -521,22 +532,22 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 )}
 
           {/* 4. Online-Galerie */}
-          {hatOnlineGalerie && (
+{hatOnlineGalerie && (
   <div className="space-y-2">
     <h3 className="font-medium text-base">Online-Galerie</h3>
 
     <section className="rounded p-4 bg-white">
       {!galerie_aktiv ? (
-        <p className="text-sm text-gray-500">Noch nicht verfügbar</p>
+        <p className="text-sm text-gray-500">
+          Die Online-Galerie ist aktuell noch nicht verfügbar.
+        </p>
       ) : (
-        <>
-          {online_galerie_url && (
-            <a href={online_galerie_url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">Galerie öffnen</a>
-          )}
-          {galerie_passwort && (
-            <p className="text-sm mt-1">Passwort: {galerie_passwort}</p>
-          )}
-        </>
+        <button
+          onClick={() => setShowGalerieModal(true)}
+          className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
+        >
+          Zugangsdaten Online‑Galerie
+        </button>
       )}
     </section>
   </div>
@@ -626,7 +637,76 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
     </div>
   </div>
 )}
-    
+
+{showGalerieModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg space-y-4">
+
+      <h3 className="text-lg font-semibold">Online‑Galerie</h3>
+
+      {/* Fülltext */}
+      <p className="text-sm text-gray-600">
+        Hier findest du die Zugangsdaten zur Online‑Galerie.  
+        Über den folgenden Link kannst du die finale Auswahl treffen.
+      </p>
+
+      {/* LINK */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Feedback‑Galerie Link</label>
+        <div className="flex gap-2">
+          <input
+            readOnly
+            value={onlinegalerie_feedbacklink || ""}
+            onClick={() =>
+              onlinegalerie_feedbacklink &&
+              copyToClipboard(onlinegalerie_feedbacklink, "link")
+            }
+            className="flex-1 border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+          />
+          <a
+            href={onlinegalerie_feedbacklink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300"
+          >
+            Öffnen
+          </a>
+        </div>
+        {copied === "link" && (
+          <p className="text-xs text-green-600 mt-1">Link kopiert</p>
+        )}
+      </div>
+
+      {/* PASSWORT */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Passwort</label>
+        <input
+          readOnly
+          value={onlinegalerie_passwort || ""}
+          onClick={() =>
+            onlinegalerie_passwort &&
+            copyToClipboard(onlinegalerie_passwort, "passwort")
+          }
+          className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+        />
+        {copied === "passwort" && (
+          <p className="text-xs text-green-600 mt-1">Passwort kopiert</p>
+        )}
+      </div>
+
+      <div className="flex justify-end pt-4">
+        <button
+          onClick={() => setShowGalerieModal(false)}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          Schließen
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+      
     </div>
 
     
