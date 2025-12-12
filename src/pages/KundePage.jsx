@@ -531,14 +531,14 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
   </div>
 )}
 
-         {/* 4. Online-Galerie */}
+       {/* 4. Online-Galerie */}
 {hatOnlineGalerie && (
   <div className="space-y-2">
     <h3 className="font-medium text-base">Online-Galerie</h3>
 
     <section className="rounded p-4 bg-white">
       {!galerie_aktiv ? (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 text-center">
           Die Online-Galerie ist aktuell noch nicht verfügbar.
         </p>
       ) : (
