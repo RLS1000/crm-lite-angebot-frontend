@@ -531,7 +531,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
   </div>
 )}
 
-          {/* 4. Online-Galerie */}
+         {/* 4. Online-Galerie */}
 {hatOnlineGalerie && (
   <div className="space-y-2">
     <h3 className="font-medium text-base">Online-Galerie</h3>
@@ -542,12 +542,14 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           Die Online-Galerie ist aktuell noch nicht verfügbar.
         </p>
       ) : (
-        <button
-          onClick={() => setShowGalerieModal(true)}
-          className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
-        >
-          Zugangsdaten Online‑Galerie
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={() => setShowGalerieModal(true)}
+            className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700"
+          >
+            Zugangsdaten Online‑Galerie
+          </button>
+        </div>
       )}
     </section>
   </div>
@@ -559,31 +561,29 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
   <section className={`rounded p-4 ${fotos_bereit ? 'bg-green-100' : 'bg-gray-100 opacity-60'}`}>
     {fotos_bereit ? (
-      <div className="flex items-center justify-center gap-2">
-        {/* Link-Icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-blue-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414" />
-        </svg>
-
-        {/* Link */}
+      <div className="flex justify-center">
         <a
           href={fotodownload_link}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-blue-600 hover:underline"
+          className="h-10 bg-blue-600 text-white px-6 rounded text-sm hover:bg-blue-700 flex items-center gap-2"
         >
+          {/* Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414" />
+          </svg>
           ZIP-Datei jetzt herunterladen
         </a>
       </div>
     ) : (
-      <p className="text-sm text-gray-500">Fotos sind noch nicht bereitgestellt.</p>
+      <p className="text-sm text-gray-500 text-center">Fotos sind noch nicht bereitgestellt.</p>
     )}
   </section>
 </div>
