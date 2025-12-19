@@ -645,7 +645,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
       {/* Feedback-Galerie */}
       <div className="space-y-2">
-        <h4 className="text-sm font-semibold text-gray-700">🧹 Schritt 1: Galerie bereinigen</h4>
+        <h4 className="text-sm font-semibold text-gray-700">Schritt 1: Galerie bereinigen</h4>
         <p className="text-sm text-gray-600">
           Über diesen Link kannst du <strong>unpassende oder private Fotos vorab aus der Galerie entfernen</strong>,
           bevor deine Gäste Zugriff erhalten.
@@ -698,7 +698,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
       {/* Reguläre Galerie */}
       <div className="border-t pt-4 space-y-2">
-        <h4 className="text-sm font-semibold text-gray-700">🌐 Schritt 2: Öffentliche Galerie</h4>
+        <h4 className="text-sm font-semibold text-gray-700">Schritt 2: Öffentliche Galerie</h4>
         <p className="text-sm text-gray-600">
           Diesen Link kannst du später mit deinen Gästen teilen. Sie benötigen dazu das folgende Passwort.
         </p>
