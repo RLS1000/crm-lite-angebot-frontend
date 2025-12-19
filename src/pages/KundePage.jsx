@@ -640,60 +640,99 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
 
 {showGalerieModal && (
   <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg space-y-4">
-
+    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg space-y-6">
       <h3 className="text-lg font-semibold">Online‑Galerie</h3>
 
-      {/* Fülltext */}
-      <p className="text-sm text-gray-600">
-        Hier findest du die Zugangsdaten zur Online‑Galerie.  
-        Über den folgenden Link kannst du die finale Auswahl treffen.
-      </p>
+      {/* Feedback-Galerie */}
+      <div className="space-y-2">
+        <h4 className="text-sm font-semibold text-gray-700">🧹 Schritt 1: Galerie bereinigen</h4>
+        <p className="text-sm text-gray-600">
+          Über diesen Link kannst du <strong>unpassende oder private Fotos vorab aus der Galerie entfernen</strong>,
+          bevor deine Gäste Zugriff erhalten.
+        </p>
 
-      {/* LINK */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Feedback‑Galerie Link</label>
-        <div className="flex gap-2">
+        {/* Feedback Galerie Link */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Feedback‑Galerie Link</label>
+          <div className="flex gap-2">
+            <input
+              readOnly
+              value={onlinegalerie_feedbacklink || ""}
+              onClick={() =>
+                onlinegalerie_feedbacklink &&
+                copyToClipboard(onlinegalerie_feedbacklink, "link")
+              }
+              className="flex-1 border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+            />
+            <a
+              href={onlinegalerie_feedbacklink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300"
+            >
+              Öffnen
+            </a>
+          </div>
+          {copied === "link" && (
+            <p className="text-xs text-green-600 mt-1">Link kopiert</p>
+          )}
+        </div>
+
+        {/* Passwort zur Feedback-Galerie */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Passwort</label>
           <input
             readOnly
-            value={onlinegalerie_feedbacklink || ""}
+            value={onlinegalerie_passwort || ""}
             onClick={() =>
-              onlinegalerie_feedbacklink &&
-              copyToClipboard(onlinegalerie_feedbacklink, "link")
+              onlinegalerie_passwort &&
+              copyToClipboard(onlinegalerie_passwort, "passwort")
             }
-            className="flex-1 border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+            className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
           />
-          <a
-            href={onlinegalerie_feedbacklink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300"
-          >
-            Öffnen
-          </a>
+          {copied === "passwort" && (
+            <p className="text-xs text-green-600 mt-1">Passwort kopiert</p>
+          )}
         </div>
-        {copied === "link" && (
-          <p className="text-xs text-green-600 mt-1">Link kopiert</p>
-        )}
       </div>
 
-      {/* PASSWORT */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Passwort</label>
-        <input
-          readOnly
-          value={onlinegalerie_passwort || ""}
-          onClick={() =>
-            onlinegalerie_passwort &&
-            copyToClipboard(onlinegalerie_passwort, "passwort")
-          }
-          className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
-        />
-        {copied === "passwort" && (
-          <p className="text-xs text-green-600 mt-1">Passwort kopiert</p>
-        )}
+      {/* Reguläre Galerie */}
+      <div className="border-t pt-4 space-y-2">
+        <h4 className="text-sm font-semibold text-gray-700">🌐 Schritt 2: Öffentliche Galerie</h4>
+        <p className="text-sm text-gray-600">
+          Diesen Link kannst du später mit deinen Gästen teilen. Sie benötigen dazu das folgende Passwort.
+        </p>
+
+        {/* Link */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Galerie-Link</label>
+          <input
+            readOnly
+            value="https://kundengalerie.mrknips.de"
+            onClick={() => copyToClipboard("https://kundengalerie.mrknips.de", "final")}
+            className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+          />
+          {copied === "final" && (
+            <p className="text-xs text-green-600 mt-1">Link kopiert</p>
+          )}
+        </div>
+
+        {/* Passwort */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Passwort für Gäste</label>
+          <input
+            readOnly
+            value={onlinegalerie_passwort || ""}
+            onClick={() =>
+              onlinegalerie_passwort &&
+              copyToClipboard(onlinegalerie_passwort, "passwort")
+            }
+            className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
+          />
+        </div>
       </div>
 
+      {/* Modal schließen */}
       <div className="flex justify-end pt-4">
         <button
           onClick={() => setShowGalerieModal(false)}
@@ -702,7 +741,6 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           Schließen
         </button>
       </div>
-
     </div>
   </div>
 )}
