@@ -677,23 +677,6 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             <p className="text-xs text-green-600 mt-1">Link kopiert</p>
           )}
         </div>
-
-        {/* Passwort zur Feedback-Galerie */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Passwort</label>
-          <input
-            readOnly
-            value={onlinegalerie_passwort || ""}
-            onClick={() =>
-              onlinegalerie_passwort &&
-              copyToClipboard(onlinegalerie_passwort, "passwort")
-            }
-            className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
-          />
-          {copied === "passwort" && (
-            <p className="text-xs text-green-600 mt-1">Passwort kopiert</p>
-          )}
-        </div>
       </div>
 
       {/* Reguläre Galerie */}
