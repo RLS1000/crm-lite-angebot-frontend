@@ -686,7 +686,7 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
           Diesen Link kannst du später mit deinen Gästen teilen. Sie benötigen dazu das folgende Passwort.
         </p>
 
-        {/* Link */}
+        {/* Öffentlicher Link */}
         <div>
           <label className="block text-sm font-medium mb-1">Galerie-Link</label>
           <input
@@ -712,6 +712,9 @@ const hatOnlineGalerie = artikelVarianteIDs.some((id) => galerieIDs.includes(id)
             }
             className="w-full border rounded px-3 py-2 text-sm cursor-pointer bg-gray-50"
           />
+          {copied === "passwort" && (
+            <p className="text-xs text-green-600 mt-1">Passwort kopiert</p>
+          )}
         </div>
       </div>
 
